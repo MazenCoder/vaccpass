@@ -2,7 +2,8 @@ import 'package:vaccpass/core/notifier/model_notifier.dart';
 import 'package:vaccpass/core/util/app_utils_impl.dart';
 import 'core/injection/injection_container.dart' as di;
 import 'core/injection/injection_container.dart';
-import 'core/usecases/preference_utils.dart';
+import 'package:rate_my_app/rate_my_app.dart';
+import 'core/cache/preference_utils.dart';
 import 'core/database/app_database.dart';
 import 'package:flutter/foundation.dart';
 import 'core/injection/app_binding.dart';
@@ -17,6 +18,16 @@ import 'package:get/get.dart';
 import 'core/util/keys.dart';
 
 
+
+RateMyApp rateMyApp = RateMyApp(
+  preferencesPrefix: Keys.rateApp,
+  minDays: 3,
+  minLaunches: 7,
+  remindDays: 2,
+  remindLaunches: 5,
+  googlePlayIdentifier: 'com.simon.vaccpass',
+  appStoreIdentifier: 'com.simon.vaccpass',
+);
 
 void main() async {
   var db = AppDatabase.instance;

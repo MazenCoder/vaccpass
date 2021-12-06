@@ -4,7 +4,9 @@ import 'package:vaccpass/pages/scanner_qrcode_page.dart';
 import 'package:vaccpass/pages/history_scan_page.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/core/util/constants.dart';
+import 'package:vaccpass/pages/scan_qr_page.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:vaccpass/pages/info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -51,7 +53,7 @@ class _NavigationAppState extends State<NavigationApp> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('no'.tr,
+              child: Text('cancel'.tr,
                 style: const TextStyle(
                   color: taigaColor,
                 ),
@@ -59,7 +61,7 @@ class _NavigationAppState extends State<NavigationApp> {
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: Text('yes'.tr,
+              child: Text('exit'.tr,
                 style: const TextStyle(
                   color: taigaColor,
                 ),
@@ -86,7 +88,7 @@ class _NavigationAppState extends State<NavigationApp> {
               children: const <Widget>[
                 HistoryScanPage(),
                 SizedBox.shrink(),
-                SizedBox.shrink(),
+                InfoPage(),
                 // AccountPage(),
               ],
             ),
@@ -98,7 +100,7 @@ class _NavigationAppState extends State<NavigationApp> {
                 borderRadius: BorderRadius.circular(20)
             ),
             child: const Icon(MdiIcons.qrcode, color: Colors.white),
-            onPressed: () => Get.to(() => const ScannerQrcodePage()),
+            onPressed: () => Get.to(() => const ScanQrPage()),
           ),
           bottomNavigationBar: Observer(
             builder: (_) => BottomNavigationBar(
@@ -110,7 +112,7 @@ class _NavigationAppState extends State<NavigationApp> {
               currentIndex: mobxApp.currentIndex,
               onTap: (index) {
                 if (index == 1) {
-                  Get.to(() => const ScannerQrcodePage());
+                  Get.to(() => const ScanQrPage());
                 } else {
                   mobxApp.onPageChanged(index);
                   _pageController.jumpToPage(index);

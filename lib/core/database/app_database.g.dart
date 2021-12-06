@@ -294,13 +294,376 @@ class $ScanEntitysTable extends ScanEntitys
   }
 }
 
+class TracerEntity extends DataClass implements Insertable<TracerEntity> {
+  final String gln;
+  final String? encoded;
+  final String? typ;
+  final String? opn;
+  final String? adr;
+  final String? ver;
+  final DateTime? date;
+  TracerEntity(
+      {required this.gln,
+      this.encoded,
+      this.typ,
+      this.opn,
+      this.adr,
+      this.ver,
+      this.date});
+  factory TracerEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return TracerEntity(
+      gln: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}gln'])!,
+      encoded: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}encoded']),
+      typ: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}typ']),
+      opn: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}opn']),
+      adr: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}adr']),
+      ver: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}ver']),
+      date: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}date']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['gln'] = Variable<String>(gln);
+    if (!nullToAbsent || encoded != null) {
+      map['encoded'] = Variable<String?>(encoded);
+    }
+    if (!nullToAbsent || typ != null) {
+      map['typ'] = Variable<String?>(typ);
+    }
+    if (!nullToAbsent || opn != null) {
+      map['opn'] = Variable<String?>(opn);
+    }
+    if (!nullToAbsent || adr != null) {
+      map['adr'] = Variable<String?>(adr);
+    }
+    if (!nullToAbsent || ver != null) {
+      map['ver'] = Variable<String?>(ver);
+    }
+    if (!nullToAbsent || date != null) {
+      map['date'] = Variable<DateTime?>(date);
+    }
+    return map;
+  }
+
+  TracerEntitysCompanion toCompanion(bool nullToAbsent) {
+    return TracerEntitysCompanion(
+      gln: Value(gln),
+      encoded: encoded == null && nullToAbsent
+          ? const Value.absent()
+          : Value(encoded),
+      typ: typ == null && nullToAbsent ? const Value.absent() : Value(typ),
+      opn: opn == null && nullToAbsent ? const Value.absent() : Value(opn),
+      adr: adr == null && nullToAbsent ? const Value.absent() : Value(adr),
+      ver: ver == null && nullToAbsent ? const Value.absent() : Value(ver),
+      date: date == null && nullToAbsent ? const Value.absent() : Value(date),
+    );
+  }
+
+  factory TracerEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return TracerEntity(
+      gln: serializer.fromJson<String>(json['gln']),
+      encoded: serializer.fromJson<String?>(json['encoded']),
+      typ: serializer.fromJson<String?>(json['typ']),
+      opn: serializer.fromJson<String?>(json['opn']),
+      adr: serializer.fromJson<String?>(json['adr']),
+      ver: serializer.fromJson<String?>(json['ver']),
+      date: serializer.fromJson<DateTime?>(json['date']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'gln': serializer.toJson<String>(gln),
+      'encoded': serializer.toJson<String?>(encoded),
+      'typ': serializer.toJson<String?>(typ),
+      'opn': serializer.toJson<String?>(opn),
+      'adr': serializer.toJson<String?>(adr),
+      'ver': serializer.toJson<String?>(ver),
+      'date': serializer.toJson<DateTime?>(date),
+    };
+  }
+
+  TracerEntity copyWith(
+          {String? gln,
+          String? encoded,
+          String? typ,
+          String? opn,
+          String? adr,
+          String? ver,
+          DateTime? date}) =>
+      TracerEntity(
+        gln: gln ?? this.gln,
+        encoded: encoded ?? this.encoded,
+        typ: typ ?? this.typ,
+        opn: opn ?? this.opn,
+        adr: adr ?? this.adr,
+        ver: ver ?? this.ver,
+        date: date ?? this.date,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('TracerEntity(')
+          ..write('gln: $gln, ')
+          ..write('encoded: $encoded, ')
+          ..write('typ: $typ, ')
+          ..write('opn: $opn, ')
+          ..write('adr: $adr, ')
+          ..write('ver: $ver, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(gln, encoded, typ, opn, adr, ver, date);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TracerEntity &&
+          other.gln == this.gln &&
+          other.encoded == this.encoded &&
+          other.typ == this.typ &&
+          other.opn == this.opn &&
+          other.adr == this.adr &&
+          other.ver == this.ver &&
+          other.date == this.date);
+}
+
+class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
+  final Value<String> gln;
+  final Value<String?> encoded;
+  final Value<String?> typ;
+  final Value<String?> opn;
+  final Value<String?> adr;
+  final Value<String?> ver;
+  final Value<DateTime?> date;
+  const TracerEntitysCompanion({
+    this.gln = const Value.absent(),
+    this.encoded = const Value.absent(),
+    this.typ = const Value.absent(),
+    this.opn = const Value.absent(),
+    this.adr = const Value.absent(),
+    this.ver = const Value.absent(),
+    this.date = const Value.absent(),
+  });
+  TracerEntitysCompanion.insert({
+    required String gln,
+    this.encoded = const Value.absent(),
+    this.typ = const Value.absent(),
+    this.opn = const Value.absent(),
+    this.adr = const Value.absent(),
+    this.ver = const Value.absent(),
+    this.date = const Value.absent(),
+  }) : gln = Value(gln);
+  static Insertable<TracerEntity> custom({
+    Expression<String>? gln,
+    Expression<String?>? encoded,
+    Expression<String?>? typ,
+    Expression<String?>? opn,
+    Expression<String?>? adr,
+    Expression<String?>? ver,
+    Expression<DateTime?>? date,
+  }) {
+    return RawValuesInsertable({
+      if (gln != null) 'gln': gln,
+      if (encoded != null) 'encoded': encoded,
+      if (typ != null) 'typ': typ,
+      if (opn != null) 'opn': opn,
+      if (adr != null) 'adr': adr,
+      if (ver != null) 'ver': ver,
+      if (date != null) 'date': date,
+    });
+  }
+
+  TracerEntitysCompanion copyWith(
+      {Value<String>? gln,
+      Value<String?>? encoded,
+      Value<String?>? typ,
+      Value<String?>? opn,
+      Value<String?>? adr,
+      Value<String?>? ver,
+      Value<DateTime?>? date}) {
+    return TracerEntitysCompanion(
+      gln: gln ?? this.gln,
+      encoded: encoded ?? this.encoded,
+      typ: typ ?? this.typ,
+      opn: opn ?? this.opn,
+      adr: adr ?? this.adr,
+      ver: ver ?? this.ver,
+      date: date ?? this.date,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (gln.present) {
+      map['gln'] = Variable<String>(gln.value);
+    }
+    if (encoded.present) {
+      map['encoded'] = Variable<String?>(encoded.value);
+    }
+    if (typ.present) {
+      map['typ'] = Variable<String?>(typ.value);
+    }
+    if (opn.present) {
+      map['opn'] = Variable<String?>(opn.value);
+    }
+    if (adr.present) {
+      map['adr'] = Variable<String?>(adr.value);
+    }
+    if (ver.present) {
+      map['ver'] = Variable<String?>(ver.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime?>(date.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TracerEntitysCompanion(')
+          ..write('gln: $gln, ')
+          ..write('encoded: $encoded, ')
+          ..write('typ: $typ, ')
+          ..write('opn: $opn, ')
+          ..write('adr: $adr, ')
+          ..write('ver: $ver, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TracerEntitysTable extends TracerEntitys
+    with TableInfo<$TracerEntitysTable, TracerEntity> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $TracerEntitysTable(this._db, [this._alias]);
+  final VerificationMeta _glnMeta = const VerificationMeta('gln');
+  late final GeneratedColumn<String?> gln = GeneratedColumn<String?>(
+      'gln', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _encodedMeta = const VerificationMeta('encoded');
+  late final GeneratedColumn<String?> encoded = GeneratedColumn<String?>(
+      'encoded', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  final VerificationMeta _typMeta = const VerificationMeta('typ');
+  late final GeneratedColumn<String?> typ = GeneratedColumn<String?>(
+      'typ', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  final VerificationMeta _opnMeta = const VerificationMeta('opn');
+  late final GeneratedColumn<String?> opn = GeneratedColumn<String?>(
+      'opn', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  final VerificationMeta _adrMeta = const VerificationMeta('adr');
+  late final GeneratedColumn<String?> adr = GeneratedColumn<String?>(
+      'adr', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  final VerificationMeta _verMeta = const VerificationMeta('ver');
+  late final GeneratedColumn<String?> ver = GeneratedColumn<String?>(
+      'ver', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  final VerificationMeta _dateMeta = const VerificationMeta('date');
+  late final GeneratedColumn<DateTime?> date = GeneratedColumn<DateTime?>(
+      'date', aliasedName, true,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [gln, encoded, typ, opn, adr, ver, date];
+  @override
+  String get aliasedName => _alias ?? 'tracer_entitys';
+  @override
+  String get actualTableName => 'tracer_entitys';
+  @override
+  VerificationContext validateIntegrity(Insertable<TracerEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('gln')) {
+      context.handle(
+          _glnMeta, gln.isAcceptableOrUnknown(data['gln']!, _glnMeta));
+    } else if (isInserting) {
+      context.missing(_glnMeta);
+    }
+    if (data.containsKey('encoded')) {
+      context.handle(_encodedMeta,
+          encoded.isAcceptableOrUnknown(data['encoded']!, _encodedMeta));
+    }
+    if (data.containsKey('typ')) {
+      context.handle(
+          _typMeta, typ.isAcceptableOrUnknown(data['typ']!, _typMeta));
+    }
+    if (data.containsKey('opn')) {
+      context.handle(
+          _opnMeta, opn.isAcceptableOrUnknown(data['opn']!, _opnMeta));
+    }
+    if (data.containsKey('adr')) {
+      context.handle(
+          _adrMeta, adr.isAcceptableOrUnknown(data['adr']!, _adrMeta));
+    }
+    if (data.containsKey('ver')) {
+      context.handle(
+          _verMeta, ver.isAcceptableOrUnknown(data['ver']!, _verMeta));
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {gln};
+  @override
+  TracerEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return TracerEntity.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $TracerEntitysTable createAlias(String alias) {
+    return $TracerEntitysTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $ScanEntitysTable scanEntitys = $ScanEntitysTable(this);
+  late final $TracerEntitysTable tracerEntitys = $TracerEntitysTable(this);
   late final ScanEntitysDao scanEntitysDao =
       ScanEntitysDao(this as AppDatabase);
+  late final TracerEntitysDao tracerEntitysDao =
+      TracerEntitysDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [scanEntitys];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [scanEntitys, tracerEntitys];
 }

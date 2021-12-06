@@ -1,3 +1,4 @@
+import 'package:vaccpass/core/entities/tracer_entitys.dart';
 import 'package:vaccpass/core/entities/scan_entitys.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:moor/moor.dart';
@@ -7,11 +8,13 @@ part 'app_database.g.dart';
 @UseMoor(
     /// All Tables
     tables: [
-      ScanEntitys
+      ScanEntitys,
+      TracerEntitys
     ],
     /// All Daos
     daos: [
-      ScanEntitysDao
+      ScanEntitysDao,
+      TracerEntitysDao,
     ],
     /// All Queries
     queries: {

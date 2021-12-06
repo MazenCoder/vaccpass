@@ -1,4 +1,4 @@
-import 'package:vaccpass/core/usecases/preference_utils.dart';
+import 'package:vaccpass/core/cache/preference_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/util/app_utils_impl.dart';

@@ -6,6 +6,8 @@ import 'dart:io';
 abstract class AppUtils extends ChangeNotifier {
 
   Future<void> saveScanQrcode(CovidPass pass);
+  Future<void> clearHistory();
+  Future<void> formatCode(String? code);
 
 
 }
