@@ -4,13 +4,13 @@ import 'package:base32/base32.dart';
 import 'package:vaccpass/cose.dart';
 import 'dart:typed_data';
 
-class CovidPass {
+class CovidPassModel {
 
   String? givenName;
   String? familyName;
   DateTime? dob;
 
-  CovidPass(this.givenName, this.familyName, this.dob);
+  CovidPassModel(this.givenName, this.familyName, this.dob);
 
   static parse(String url, {DidClient? didClient, bool allowTestIssuers = false}) async {
     RegExp exp = RegExp(r"^([^:]+):/([^/]+)/([A-Z2-7]+)$");
@@ -57,7 +57,7 @@ class CovidPass {
 
     final dob = DateTime.parse(dobString);
 
-    return CovidPass(givenName, familyName, dob);
+    return CovidPassModel(givenName, familyName, dob);
   }
 
   static Future<Cose> decode(

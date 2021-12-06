@@ -11,10 +11,16 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
   final String id;
   final String? givenName;
   final String? familyName;
+  final String? encoded;
   final DateTime? dob;
   final DateTime? date;
   ScanEntity(
-      {required this.id, this.givenName, this.familyName, this.dob, this.date});
+      {required this.id,
+      this.givenName,
+      this.familyName,
+      this.encoded,
+      this.dob,
+      this.date});
   factory ScanEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -25,6 +31,8 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}given_name']),
       familyName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}family_name']),
+      encoded: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}encoded']),
       dob: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}dob']),
       date: const DateTimeType()
@@ -40,6 +48,9 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
     }
     if (!nullToAbsent || familyName != null) {
       map['family_name'] = Variable<String?>(familyName);
+    }
+    if (!nullToAbsent || encoded != null) {
+      map['encoded'] = Variable<String?>(encoded);
     }
     if (!nullToAbsent || dob != null) {
       map['dob'] = Variable<DateTime?>(dob);
@@ -59,6 +70,9 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       familyName: familyName == null && nullToAbsent
           ? const Value.absent()
           : Value(familyName),
+      encoded: encoded == null && nullToAbsent
+          ? const Value.absent()
+          : Value(encoded),
       dob: dob == null && nullToAbsent ? const Value.absent() : Value(dob),
       date: date == null && nullToAbsent ? const Value.absent() : Value(date),
     );
@@ -71,6 +85,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       id: serializer.fromJson<String>(json['id']),
       givenName: serializer.fromJson<String?>(json['givenName']),
       familyName: serializer.fromJson<String?>(json['familyName']),
+      encoded: serializer.fromJson<String?>(json['encoded']),
       dob: serializer.fromJson<DateTime?>(json['dob']),
       date: serializer.fromJson<DateTime?>(json['date']),
     );
@@ -82,6 +97,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       'id': serializer.toJson<String>(id),
       'givenName': serializer.toJson<String?>(givenName),
       'familyName': serializer.toJson<String?>(familyName),
+      'encoded': serializer.toJson<String?>(encoded),
       'dob': serializer.toJson<DateTime?>(dob),
       'date': serializer.toJson<DateTime?>(date),
     };
@@ -91,12 +107,14 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           {String? id,
           String? givenName,
           String? familyName,
+          String? encoded,
           DateTime? dob,
           DateTime? date}) =>
       ScanEntity(
         id: id ?? this.id,
         givenName: givenName ?? this.givenName,
         familyName: familyName ?? this.familyName,
+        encoded: encoded ?? this.encoded,
         dob: dob ?? this.dob,
         date: date ?? this.date,
       );
@@ -106,6 +124,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           ..write('id: $id, ')
           ..write('givenName: $givenName, ')
           ..write('familyName: $familyName, ')
+          ..write('encoded: $encoded, ')
           ..write('dob: $dob, ')
           ..write('date: $date')
           ..write(')'))
@@ -113,7 +132,8 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
   }
 
   @override
-  int get hashCode => Object.hash(id, givenName, familyName, dob, date);
+  int get hashCode =>
+      Object.hash(id, givenName, familyName, encoded, dob, date);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -121,6 +141,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           other.id == this.id &&
           other.givenName == this.givenName &&
           other.familyName == this.familyName &&
+          other.encoded == this.encoded &&
           other.dob == this.dob &&
           other.date == this.date);
 }
@@ -129,12 +150,14 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
   final Value<String> id;
   final Value<String?> givenName;
   final Value<String?> familyName;
+  final Value<String?> encoded;
   final Value<DateTime?> dob;
   final Value<DateTime?> date;
   const ScanEntitysCompanion({
     this.id = const Value.absent(),
     this.givenName = const Value.absent(),
     this.familyName = const Value.absent(),
+    this.encoded = const Value.absent(),
     this.dob = const Value.absent(),
     this.date = const Value.absent(),
   });
@@ -142,6 +165,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     required String id,
     this.givenName = const Value.absent(),
     this.familyName = const Value.absent(),
+    this.encoded = const Value.absent(),
     this.dob = const Value.absent(),
     this.date = const Value.absent(),
   }) : id = Value(id);
@@ -149,6 +173,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     Expression<String>? id,
     Expression<String?>? givenName,
     Expression<String?>? familyName,
+    Expression<String?>? encoded,
     Expression<DateTime?>? dob,
     Expression<DateTime?>? date,
   }) {
@@ -156,6 +181,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
       if (id != null) 'id': id,
       if (givenName != null) 'given_name': givenName,
       if (familyName != null) 'family_name': familyName,
+      if (encoded != null) 'encoded': encoded,
       if (dob != null) 'dob': dob,
       if (date != null) 'date': date,
     });
@@ -165,12 +191,14 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
       {Value<String>? id,
       Value<String?>? givenName,
       Value<String?>? familyName,
+      Value<String?>? encoded,
       Value<DateTime?>? dob,
       Value<DateTime?>? date}) {
     return ScanEntitysCompanion(
       id: id ?? this.id,
       givenName: givenName ?? this.givenName,
       familyName: familyName ?? this.familyName,
+      encoded: encoded ?? this.encoded,
       dob: dob ?? this.dob,
       date: date ?? this.date,
     );
@@ -188,6 +216,9 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     if (familyName.present) {
       map['family_name'] = Variable<String?>(familyName.value);
     }
+    if (encoded.present) {
+      map['encoded'] = Variable<String?>(encoded.value);
+    }
     if (dob.present) {
       map['dob'] = Variable<DateTime?>(dob.value);
     }
@@ -203,6 +234,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
           ..write('id: $id, ')
           ..write('givenName: $givenName, ')
           ..write('familyName: $familyName, ')
+          ..write('encoded: $encoded, ')
           ..write('dob: $dob, ')
           ..write('date: $date')
           ..write(')'))
@@ -231,6 +263,12 @@ class $ScanEntitysTable extends ScanEntitys
       typeName: 'TEXT',
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
+  final VerificationMeta _encodedMeta = const VerificationMeta('encoded');
+  late final GeneratedColumn<String?> encoded = GeneratedColumn<String?>(
+      'encoded', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _dobMeta = const VerificationMeta('dob');
   late final GeneratedColumn<DateTime?> dob = GeneratedColumn<DateTime?>(
       'dob', aliasedName, true,
@@ -244,7 +282,8 @@ class $ScanEntitysTable extends ScanEntitys
       requiredDuringInsert: false,
       defaultValue: Constant(DateTime.now()));
   @override
-  List<GeneratedColumn> get $columns => [id, givenName, familyName, dob, date];
+  List<GeneratedColumn> get $columns =>
+      [id, givenName, familyName, encoded, dob, date];
   @override
   String get aliasedName => _alias ?? 'scan_entitys';
   @override
@@ -268,6 +307,10 @@ class $ScanEntitysTable extends ScanEntitys
           _familyNameMeta,
           familyName.isAcceptableOrUnknown(
               data['family_name']!, _familyNameMeta));
+    }
+    if (data.containsKey('encoded')) {
+      context.handle(_encodedMeta,
+          encoded.isAcceptableOrUnknown(data['encoded']!, _encodedMeta));
     }
     if (data.containsKey('dob')) {
       context.handle(

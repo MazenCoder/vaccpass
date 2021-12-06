@@ -8,6 +8,7 @@ class ScanEntitys extends Table {
   TextColumn get id => text()();
   TextColumn get givenName => text().nullable().withDefault(const Constant(''))();
   TextColumn get familyName => text().nullable().withDefault(const Constant(''))();
+  TextColumn get encoded => text().nullable().withDefault(const Constant(''))();
   DateTimeColumn get dob => dateTime().nullable().withDefault(Constant(DateTime.now()))();
   DateTimeColumn get date => dateTime().nullable().withDefault(Constant(DateTime.now()))();
 
@@ -31,4 +32,11 @@ class ScanEntitysDao extends DatabaseAccessor<AppDatabase>
   Future updateScanEntity(Insertable<ScanEntity> row) => update(scanEntitys).replace(row);
   Future deleteScanEntity(Insertable<ScanEntity> row) => delete(scanEntitys).delete(row);
 
+  Stream<List<ScanEntity>> watchAllScanByDate() {
+    return (select(scanEntitys)
+      ..orderBy([
+            (t) => OrderingTerm(expression: t.date, mode: OrderingMode.desc)
+      ])
+    ).watch();
+  }
 }

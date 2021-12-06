@@ -28,4 +28,9 @@ const Map<String, String> en = {
   "saved_success": "Saved successfully",
   "exit_app": "Are you sure you want to exit?",
   "exit": "Exit",
+  "scan_vaccine": "Scan vaccine",
+  "scan_locations": "Scan locations",
+  "type_scan": "Choose the type scan",
+  "vaccines": "Vaccines",
+  "locations": "Locations",
 };

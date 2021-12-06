@@ -1,15 +1,15 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:vaccpass/core/ui/responsive_safe_area.dart';
-import 'package:vaccpass/pages/scanner_qrcode_page.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vaccpass/pages/history_scan_page.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/core/util/constants.dart';
-import 'package:vaccpass/pages/scan_qr_page.dart';
+import 'package:vaccpass/pages/scan_location_page.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:vaccpass/pages/info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:vaccpass/widgets/modal_scan.dart';
 
 
 class NavigationApp extends StatefulWidget {
@@ -27,6 +27,7 @@ class _NavigationAppState extends State<NavigationApp> {
   Future<bool> _onWillPop(BuildContext context) async {
     if (mobxApp.currentIndex != 0) {
       mobxApp.onPageChanged(0);
+      _pageController.jumpToPage(mobxApp.currentIndex);
       return Future.value(false);
     } else {
       return await showDialog(
@@ -100,7 +101,12 @@ class _NavigationAppState extends State<NavigationApp> {
                 borderRadius: BorderRadius.circular(20)
             ),
             child: const Icon(MdiIcons.qrcode, color: Colors.white),
-            onPressed: () => Get.to(() => const ScanQrPage()),
+            // onPressed: () => Get.to(() => const ScanQrPage()),
+            onPressed: () => showMaterialModalBottomSheet(
+                expand: false, context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) => const ModalScan()
+            ),
           ),
           bottomNavigationBar: Observer(
             builder: (_) => BottomNavigationBar(
@@ -112,7 +118,12 @@ class _NavigationAppState extends State<NavigationApp> {
               currentIndex: mobxApp.currentIndex,
               onTap: (index) {
                 if (index == 1) {
-                  Get.to(() => const ScanQrPage());
+                  // Get.to(() => const ScanQrPage());
+                  showMaterialModalBottomSheet(
+                      expand: false, context: context,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => const ModalScan()
+                  );
                 } else {
                   mobxApp.onPageChanged(index);
                   _pageController.jumpToPage(index);

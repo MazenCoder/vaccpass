@@ -1,31 +1,32 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:vaccpass/covid_pass.dart';
+import 'package:vaccpass/covid_pass_model.dart';
 import 'package:vaccpass/did_client.dart';
 import 'package:vaccpass/exceptions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 import 'dart:io';
 
 
 
-class ScannerQrcodePage extends StatefulWidget {
-  const ScannerQrcodePage({Key? key}) : super(key: key);
+class ScanVaccinePage extends StatefulWidget {
+  const ScanVaccinePage({Key? key}) : super(key: key);
 
   @override
-  _ScannerQrcodePageState createState() => _ScannerQrcodePageState();
+  _ScanVaccinePageState createState() => _ScanVaccinePageState();
 }
 
-class _ScannerQrcodePageState extends State<ScannerQrcodePage> {
+class _ScanVaccinePageState extends State<ScanVaccinePage> {
   static const bool allowTestIssuers = false;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   final DidClient didClient = DidClient();
   Barcode? result;
   QRViewController? controller;
-  CovidPass? covidPass;
+  CovidPassModel? covidPass;
   String? errorMessage;
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -78,14 +79,14 @@ class _ScannerQrcodePageState extends State<ScannerQrcodePage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) async {
-      CovidPass? pass;
+      CovidPassModel? pass;
       String? error;
       if (scanData.code != null) {
         try {
-          pass = await CovidPass.parse(scanData.code!,
+          pass = await CovidPassModel.parse(scanData.code!,
               didClient: didClient, allowTestIssuers: allowTestIssuers);
           if (pass != null) {
-            await appUtils.saveScanQrcode(pass);
+            await appUtils.saveScanQrcode(pass, scanData.code);
           }
         } on CovidPassException catch (e) {
           error = e.cause.toString();
@@ -109,7 +110,7 @@ class _ScannerQrcodePageState extends State<ScannerQrcodePage> {
 }
 
 class ValidCovidPassCard extends StatelessWidget {
-  final CovidPass covidPass;
+  final CovidPassModel covidPass;
 
   const ValidCovidPassCard({Key? key, required this.covidPass})
       : super(key: key);
@@ -121,10 +122,10 @@ class ValidCovidPassCard extends StatelessWidget {
       children: [
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.check_box_rounded, color: Colors.green, size: 60),
-            Text('VALID PASS',
-              style: TextStyle(fontSize: 10, color: Colors.green),
+          children: [
+            const Icon(Icons.check_box_rounded, color: Colors.green, size: 60),
+            Text('saved_success'.tr,
+              style: const TextStyle(fontSize: 10, color: Colors.green),
             ),
           ],
         ),

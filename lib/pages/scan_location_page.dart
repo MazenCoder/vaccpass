@@ -11,14 +11,14 @@ import 'dart:io';
 
 
 
-class ScanQrPage extends StatefulWidget {
-  const ScanQrPage({Key? key}) : super(key: key);
+class ScanLocationPage extends StatefulWidget {
+  const ScanLocationPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ScanQrPageState();
+  State<StatefulWidget> createState() => _ScanLocationPageState();
 }
 
-class _ScanQrPageState extends State<ScanQrPage> {
+class _ScanLocationPageState extends State<ScanLocationPage> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -147,7 +147,7 @@ class _ScanQrPageState extends State<ScanQrPage> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      appUtils.formatCode(scanData.code);
+      appUtils.formatScanLocation(scanData.code);
       setState(() {
         result = scanData;
       });

@@ -57,6 +57,7 @@ dependencies:
   flutter_mobx: ^2.0.2
   webview_flutter: ^2.3.1
   qr_flutter: ^4.0.0
+  modal_bottom_sheet: ^2.0.0
 
 
 dev_dependencies:
@@ -67,7 +68,12 @@ dev_dependencies:
   logger: ^1.1.0
   moor_generator: any
   mobx_codegen: ^2.0.4
+  flutter_launcher_icons: ^0.9.2
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo-launcher.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
