@@ -4,12 +4,11 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vaccpass/pages/history_scan_page.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/core/util/constants.dart';
-import 'package:vaccpass/pages/scan_location_page.dart';
+import 'package:vaccpass/widgets/modal_scan.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:vaccpass/pages/info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vaccpass/widgets/modal_scan.dart';
 
 
 class NavigationApp extends StatefulWidget {

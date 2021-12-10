@@ -1,13 +1,14 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vaccpass/covid_pass_model.dart';
 import 'package:vaccpass/did_client.dart';
 import 'package:vaccpass/exceptions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'dart:developer';
 import 'dart:io';
 
 
@@ -42,15 +43,45 @@ class _ScanVaccinePageState extends State<ScanVaccinePage> {
     }
   }
 
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    var scanArea = (MediaQuery.of(context).size.width < 100 ||
+        MediaQuery.of(context).size.height < 100) ? 150.0 : 300.0;
     return Scaffold(
+      appBar: AppBar(
+        title: Text('SCAN PASSPORT',
+          style: GoogleFonts.lato(
+            fontWeight: FontWeight.bold,
+          )
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Get.back(),
+        ),
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
             flex: 5,
             child: QRView(
               key: qrKey,
+              overlay: QrScannerOverlayShape(
+                  borderColor: Colors.red,
+                  borderRadius: 10,
+                  borderLength: 30,
+                  borderWidth: 10,
+                  cutOutSize: scanArea),
+              onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
               onQRViewCreated: _onQRViewCreated,
             ),
           ),

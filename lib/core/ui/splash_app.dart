@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
 
+import 'package:vaccpass/pages/home_page.dart';
+
 
 
 AnimatedSplashType? _runfor;
@@ -82,7 +84,7 @@ class _SplashAppState extends State<SplashApp>
     String version = packageInfo.version;
     context.read<ModelNotifier>().setVersion(version);
     await Future.delayed(const Duration(seconds: 2));
-    Get.offAll(() => const NavigationApp());
+    Get.offAll(() => const HomePage());
   }
 
 

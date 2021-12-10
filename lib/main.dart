@@ -2,13 +2,12 @@ import 'package:vaccpass/core/notifier/model_notifier.dart';
 import 'package:vaccpass/core/util/app_utils_impl.dart';
 import 'core/injection/injection_container.dart' as di;
 import 'core/injection/injection_container.dart';
+import 'package:vaccpass/pages/home_page.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'core/cache/preference_utils.dart';
 import 'core/database/app_database.dart';
-import 'package:flutter/foundation.dart';
 import 'core/injection/app_binding.dart';
 import 'package:provider/provider.dart';
-import 'navigation/navigation_app.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'core/langs/translation.dart';
@@ -64,7 +63,7 @@ class MyApp extends StatelessWidget {
         locale: Locale(PreferenceUtils.getString(Keys.locale, 'en')),
         fallbackLocale: const Locale('en'),
         debugShowCheckedModeBanner: false,
-        title: 'VACCPASS',
+        title: 'VACC+ID',
         theme: ThemeData(
           primarySwatch: primaryColor,
           primaryColor: primaryColor,
@@ -77,7 +76,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: SplashApp(
-          home: const NavigationApp(),
+          home: const HomePage(),
           type: AnimatedSplashType.StaticDuration,
           duration: 800,
         )

@@ -3,7 +3,7 @@ const Map<String, String> en = {
   "oops": "Oops!",
   "something_wrong": "Something went wrong",
   "welcome": "Welcome %s",
-  "app_name": "VACCPASS",
+  "app_name": "VACC+ID",
   "scan": "Scan",
   "info": "Info",
   "history": "History",

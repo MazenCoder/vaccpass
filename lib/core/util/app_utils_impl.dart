@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/models/tracer_model.dart';
+import 'package:vaccpass/core/error/failures.dart';
 import 'package:vaccpass/covid_pass_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -58,6 +59,7 @@ class AppUtilsImpl extends AppUtils {
       }
     } catch(e) {
       logger.e(e);
+      throw const NoDataFailure();
     }
   }
 }
