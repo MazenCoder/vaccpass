@@ -1,12 +1,17 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:vaccpass/core/notifier/model_notifier.dart';
-import 'package:vaccpass/core/ui/loading_dialog.dart';
+import 'package:vaccpass/core/database/app_database.dart';
+import 'package:vaccpass/widgets/update_pin_code.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
+import 'package:vaccpass/widgets/create_pin_code.dart';
+import 'package:vaccpass/core/ui/loading_dialog.dart';
 import 'package:vaccpass/core/util/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vaccpass/core/util/keys.dart';
 import 'package:vaccpass/core/util/img.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'license_package_page.dart';
 import 'package:get/get.dart';
 import '../main.dart';
@@ -20,13 +25,20 @@ class InfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _version = context.read<ModelNotifier>().version;
+    final db = Provider.of<AppDatabase>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Colors.grey,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Get.back(),
+        ),
         title: Text('information'.tr,
           style: GoogleFonts.acme(),
         ),
       ),
+      backgroundColor: Colors.grey.shade200,
       body: Padding(
         padding: const EdgeInsets.all(0),
         child: Column(
@@ -43,7 +55,71 @@ class InfoPage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () => Get.to(() => const LicensePackagePage()),
             ),
+
             const Divider(),
+            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
+              child: StreamBuilder<PinEntity?>(
+                stream: db.pinEntitysDao.watchPinCode(Keys.pinCodeId),
+                builder: (context, snapshot) {
+                  switch(snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const SizedBox.shrink();
+                    default:
+                      return Row(
+                        children: [
+                          SvgPicture.asset('assets/images/Lock.svg',
+                            color: primaryColor,
+                            height: 28, width: 28,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextButton(
+                                    child: Text('pin_code'.tr,
+                                      style: GoogleFonts.acme(),
+                                    ),
+                                    onPressed: () => Get.to(() => (snapshot.hasData) ? const UpdatePinCode() : const CreatePinCode()),
+                                  ),
+                                  if (snapshot.hasData)
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('activate_deactivate_pin'.tr,
+                                        ),
+                                        Switch(
+                                          value: snapshot.data?.active??false,
+                                          activeColor: primaryColor,
+                                          inactiveTrackColor: Colors.grey,
+                                          onChanged: (bool value) {
+                                            appUtils.activateDeactivatePin(snapshot.data, value);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () => Get.to(() => (snapshot.hasData) ? const UpdatePinCode() : const CreatePinCode()),
+                            icon: const Icon(Icons.arrow_forward_ios,
+                              color: Colors.grey,
+                            ),
+                          )
+                        ],
+                      );
+                  }
+                },
+              ),
+            ),
+            const Divider(),
+
             ListTile(
               title: Text('privacy'.tr,
                 style: GoogleFonts.acme(),

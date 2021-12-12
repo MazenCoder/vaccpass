@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flash/flash.dart';
 import 'dart:collection';
 import 'constants.dart';
@@ -110,7 +109,7 @@ class FlashHelper {
     required BuildContext context,
     required String title,
     required String message,
-    required ChildBuilder primaryAction,
+    // required ChildBuilder primaryAction,
     Duration duration = const Duration(seconds: 3),
   }) {
     return showFlash<void>(
@@ -127,7 +126,7 @@ class FlashHelper {
             child: FlashBar(
               title: Text(title, style: _titleStyle(context, Colors.white)),
               content: Text(message, style: _contentStyle(context, Colors.white)),
-              primaryAction: primaryAction.call(context, controller, setState),
+              // primaryAction: primaryAction.call(context, controller, setState),
               icon: Icon(Icons.warning, color: Colors.red[300]),
               // leftBarIndicatorColor: Colors.black,
             ),

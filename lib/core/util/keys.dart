@@ -2,7 +2,9 @@
 
 class Keys {
 
+  static const String pinCodeId = "pinCodeId";
   static const String locale = "locale";
+  static const String dialogPinCode = "dialogPinCode";
   static const String email = "email";
   static const String intro = "intro";
   static const String fcmTokens = "fcmTokens";

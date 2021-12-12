@@ -24,6 +24,21 @@ mixin _$MobxApp on MobxAppBase, Store {
     });
   }
 
+  final _$obscureTextAtom = Atom(name: 'MobxAppBase.obscureText');
+
+  @override
+  bool get obscureText {
+    _$obscureTextAtom.reportRead();
+    return super.obscureText;
+  }
+
+  @override
+  set obscureText(bool value) {
+    _$obscureTextAtom.reportWrite(value, super.obscureText, () {
+      super.obscureText = value;
+    });
+  }
+
   final _$MobxAppBaseActionController = ActionController(name: 'MobxAppBase');
 
   @override
@@ -38,9 +53,21 @@ mixin _$MobxApp on MobxAppBase, Store {
   }
 
   @override
+  void toggle(bool val) {
+    final _$actionInfo =
+        _$MobxAppBaseActionController.startAction(name: 'MobxAppBase.toggle');
+    try {
+      return super.toggle(val);
+    } finally {
+      _$MobxAppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-currentIndex: ${currentIndex}
+currentIndex: ${currentIndex},
+obscureText: ${obscureText}
     ''';
   }
 }

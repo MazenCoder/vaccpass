@@ -1,5 +1,6 @@
 import 'package:vaccpass/core/entities/tracer_entitys.dart';
 import 'package:vaccpass/core/entities/scan_entitys.dart';
+import 'package:vaccpass/core/entities/pin_entitys.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 import 'package:moor/moor.dart';
 
@@ -9,12 +10,14 @@ part 'app_database.g.dart';
     /// All Tables
     tables: [
       ScanEntitys,
-      TracerEntitys
+      TracerEntitys,
+      PinEntitys,
     ],
     /// All Daos
     daos: [
       ScanEntitysDao,
       TracerEntitysDao,
+      PinEntitysDao,
     ],
     /// All Queries
     queries: {

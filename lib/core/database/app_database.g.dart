@@ -12,6 +12,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
   final String? givenName;
   final String? familyName;
   final String? encoded;
+  final String? imageId;
   final DateTime? dob;
   final DateTime? date;
   ScanEntity(
@@ -19,6 +20,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       this.givenName,
       this.familyName,
       this.encoded,
+      this.imageId,
       this.dob,
       this.date});
   factory ScanEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -33,6 +35,8 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}family_name']),
       encoded: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}encoded']),
+      imageId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}image_id']),
       dob: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}dob']),
       date: const DateTimeType()
@@ -51,6 +55,9 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
     }
     if (!nullToAbsent || encoded != null) {
       map['encoded'] = Variable<String?>(encoded);
+    }
+    if (!nullToAbsent || imageId != null) {
+      map['image_id'] = Variable<String?>(imageId);
     }
     if (!nullToAbsent || dob != null) {
       map['dob'] = Variable<DateTime?>(dob);
@@ -73,6 +80,9 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       encoded: encoded == null && nullToAbsent
           ? const Value.absent()
           : Value(encoded),
+      imageId: imageId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageId),
       dob: dob == null && nullToAbsent ? const Value.absent() : Value(dob),
       date: date == null && nullToAbsent ? const Value.absent() : Value(date),
     );
@@ -86,6 +96,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       givenName: serializer.fromJson<String?>(json['givenName']),
       familyName: serializer.fromJson<String?>(json['familyName']),
       encoded: serializer.fromJson<String?>(json['encoded']),
+      imageId: serializer.fromJson<String?>(json['imageId']),
       dob: serializer.fromJson<DateTime?>(json['dob']),
       date: serializer.fromJson<DateTime?>(json['date']),
     );
@@ -98,6 +109,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       'givenName': serializer.toJson<String?>(givenName),
       'familyName': serializer.toJson<String?>(familyName),
       'encoded': serializer.toJson<String?>(encoded),
+      'imageId': serializer.toJson<String?>(imageId),
       'dob': serializer.toJson<DateTime?>(dob),
       'date': serializer.toJson<DateTime?>(date),
     };
@@ -108,6 +120,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           String? givenName,
           String? familyName,
           String? encoded,
+          String? imageId,
           DateTime? dob,
           DateTime? date}) =>
       ScanEntity(
@@ -115,6 +128,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
         givenName: givenName ?? this.givenName,
         familyName: familyName ?? this.familyName,
         encoded: encoded ?? this.encoded,
+        imageId: imageId ?? this.imageId,
         dob: dob ?? this.dob,
         date: date ?? this.date,
       );
@@ -125,6 +139,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           ..write('givenName: $givenName, ')
           ..write('familyName: $familyName, ')
           ..write('encoded: $encoded, ')
+          ..write('imageId: $imageId, ')
           ..write('dob: $dob, ')
           ..write('date: $date')
           ..write(')'))
@@ -133,7 +148,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
 
   @override
   int get hashCode =>
-      Object.hash(id, givenName, familyName, encoded, dob, date);
+      Object.hash(id, givenName, familyName, encoded, imageId, dob, date);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -142,6 +157,7 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           other.givenName == this.givenName &&
           other.familyName == this.familyName &&
           other.encoded == this.encoded &&
+          other.imageId == this.imageId &&
           other.dob == this.dob &&
           other.date == this.date);
 }
@@ -151,6 +167,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
   final Value<String?> givenName;
   final Value<String?> familyName;
   final Value<String?> encoded;
+  final Value<String?> imageId;
   final Value<DateTime?> dob;
   final Value<DateTime?> date;
   const ScanEntitysCompanion({
@@ -158,6 +175,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     this.givenName = const Value.absent(),
     this.familyName = const Value.absent(),
     this.encoded = const Value.absent(),
+    this.imageId = const Value.absent(),
     this.dob = const Value.absent(),
     this.date = const Value.absent(),
   });
@@ -166,6 +184,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     this.givenName = const Value.absent(),
     this.familyName = const Value.absent(),
     this.encoded = const Value.absent(),
+    this.imageId = const Value.absent(),
     this.dob = const Value.absent(),
     this.date = const Value.absent(),
   }) : id = Value(id);
@@ -174,6 +193,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     Expression<String?>? givenName,
     Expression<String?>? familyName,
     Expression<String?>? encoded,
+    Expression<String?>? imageId,
     Expression<DateTime?>? dob,
     Expression<DateTime?>? date,
   }) {
@@ -182,6 +202,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
       if (givenName != null) 'given_name': givenName,
       if (familyName != null) 'family_name': familyName,
       if (encoded != null) 'encoded': encoded,
+      if (imageId != null) 'image_id': imageId,
       if (dob != null) 'dob': dob,
       if (date != null) 'date': date,
     });
@@ -192,6 +213,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
       Value<String?>? givenName,
       Value<String?>? familyName,
       Value<String?>? encoded,
+      Value<String?>? imageId,
       Value<DateTime?>? dob,
       Value<DateTime?>? date}) {
     return ScanEntitysCompanion(
@@ -199,6 +221,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
       givenName: givenName ?? this.givenName,
       familyName: familyName ?? this.familyName,
       encoded: encoded ?? this.encoded,
+      imageId: imageId ?? this.imageId,
       dob: dob ?? this.dob,
       date: date ?? this.date,
     );
@@ -219,6 +242,9 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     if (encoded.present) {
       map['encoded'] = Variable<String?>(encoded.value);
     }
+    if (imageId.present) {
+      map['image_id'] = Variable<String?>(imageId.value);
+    }
     if (dob.present) {
       map['dob'] = Variable<DateTime?>(dob.value);
     }
@@ -235,6 +261,7 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
           ..write('givenName: $givenName, ')
           ..write('familyName: $familyName, ')
           ..write('encoded: $encoded, ')
+          ..write('imageId: $imageId, ')
           ..write('dob: $dob, ')
           ..write('date: $date')
           ..write(')'))
@@ -269,6 +296,12 @@ class $ScanEntitysTable extends ScanEntitys
       typeName: 'TEXT',
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
+  final VerificationMeta _imageIdMeta = const VerificationMeta('imageId');
+  late final GeneratedColumn<String?> imageId = GeneratedColumn<String?>(
+      'image_id', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _dobMeta = const VerificationMeta('dob');
   late final GeneratedColumn<DateTime?> dob = GeneratedColumn<DateTime?>(
       'dob', aliasedName, true,
@@ -283,7 +316,7 @@ class $ScanEntitysTable extends ScanEntitys
       defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, givenName, familyName, encoded, dob, date];
+      [id, givenName, familyName, encoded, imageId, dob, date];
   @override
   String get aliasedName => _alias ?? 'scan_entitys';
   @override
@@ -311,6 +344,10 @@ class $ScanEntitysTable extends ScanEntitys
     if (data.containsKey('encoded')) {
       context.handle(_encodedMeta,
           encoded.isAcceptableOrUnknown(data['encoded']!, _encodedMeta));
+    }
+    if (data.containsKey('image_id')) {
+      context.handle(_imageIdMeta,
+          imageId.isAcceptableOrUnknown(data['image_id']!, _imageIdMeta));
     }
     if (data.containsKey('dob')) {
       context.handle(
@@ -696,17 +733,222 @@ class $TracerEntitysTable extends TracerEntitys
   }
 }
 
+class PinEntity extends DataClass implements Insertable<PinEntity> {
+  final String id;
+  final String? code;
+  final bool active;
+  PinEntity({required this.id, this.code, required this.active});
+  factory PinEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return PinEntity(
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      code: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}code']),
+      active: const BoolType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}active'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || code != null) {
+      map['code'] = Variable<String?>(code);
+    }
+    map['active'] = Variable<bool>(active);
+    return map;
+  }
+
+  PinEntitysCompanion toCompanion(bool nullToAbsent) {
+    return PinEntitysCompanion(
+      id: Value(id),
+      code: code == null && nullToAbsent ? const Value.absent() : Value(code),
+      active: Value(active),
+    );
+  }
+
+  factory PinEntity.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return PinEntity(
+      id: serializer.fromJson<String>(json['id']),
+      code: serializer.fromJson<String?>(json['code']),
+      active: serializer.fromJson<bool>(json['active']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'code': serializer.toJson<String?>(code),
+      'active': serializer.toJson<bool>(active),
+    };
+  }
+
+  PinEntity copyWith({String? id, String? code, bool? active}) => PinEntity(
+        id: id ?? this.id,
+        code: code ?? this.code,
+        active: active ?? this.active,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('PinEntity(')
+          ..write('id: $id, ')
+          ..write('code: $code, ')
+          ..write('active: $active')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, code, active);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PinEntity &&
+          other.id == this.id &&
+          other.code == this.code &&
+          other.active == this.active);
+}
+
+class PinEntitysCompanion extends UpdateCompanion<PinEntity> {
+  final Value<String> id;
+  final Value<String?> code;
+  final Value<bool> active;
+  const PinEntitysCompanion({
+    this.id = const Value.absent(),
+    this.code = const Value.absent(),
+    this.active = const Value.absent(),
+  });
+  PinEntitysCompanion.insert({
+    required String id,
+    this.code = const Value.absent(),
+    this.active = const Value.absent(),
+  }) : id = Value(id);
+  static Insertable<PinEntity> custom({
+    Expression<String>? id,
+    Expression<String?>? code,
+    Expression<bool>? active,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (code != null) 'code': code,
+      if (active != null) 'active': active,
+    });
+  }
+
+  PinEntitysCompanion copyWith(
+      {Value<String>? id, Value<String?>? code, Value<bool>? active}) {
+    return PinEntitysCompanion(
+      id: id ?? this.id,
+      code: code ?? this.code,
+      active: active ?? this.active,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (code.present) {
+      map['code'] = Variable<String?>(code.value);
+    }
+    if (active.present) {
+      map['active'] = Variable<bool>(active.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PinEntitysCompanion(')
+          ..write('id: $id, ')
+          ..write('code: $code, ')
+          ..write('active: $active')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PinEntitysTable extends PinEntitys
+    with TableInfo<$PinEntitysTable, PinEntity> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $PinEntitysTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _codeMeta = const VerificationMeta('code');
+  late final GeneratedColumn<String?> code = GeneratedColumn<String?>(
+      'code', aliasedName, true,
+      typeName: 'TEXT', requiredDuringInsert: false);
+  final VerificationMeta _activeMeta = const VerificationMeta('active');
+  late final GeneratedColumn<bool?> active = GeneratedColumn<bool?>(
+      'active', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (active IN (0, 1))',
+      defaultValue: const Constant(true));
+  @override
+  List<GeneratedColumn> get $columns => [id, code, active];
+  @override
+  String get aliasedName => _alias ?? 'pin_entitys';
+  @override
+  String get actualTableName => 'pin_entitys';
+  @override
+  VerificationContext validateIntegrity(Insertable<PinEntity> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('code')) {
+      context.handle(
+          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+    }
+    if (data.containsKey('active')) {
+      context.handle(_activeMeta,
+          active.isAcceptableOrUnknown(data['active']!, _activeMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PinEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return PinEntity.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $PinEntitysTable createAlias(String alias) {
+    return $PinEntitysTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $ScanEntitysTable scanEntitys = $ScanEntitysTable(this);
   late final $TracerEntitysTable tracerEntitys = $TracerEntitysTable(this);
+  late final $PinEntitysTable pinEntitys = $PinEntitysTable(this);
   late final ScanEntitysDao scanEntitysDao =
       ScanEntitysDao(this as AppDatabase);
   late final TracerEntitysDao tracerEntitysDao =
       TracerEntitysDao(this as AppDatabase);
+  late final PinEntitysDao pinEntitysDao = PinEntitysDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [scanEntitys, tracerEntitys];
+      [scanEntitys, tracerEntitys, pinEntitys];
 }

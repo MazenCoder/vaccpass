@@ -1,16 +1,8 @@
 import 'package:vaccpass/core/database/app_database.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:pdf/pdf.dart';
-import 'dart:typed_data';
-import 'dart:convert';
-import 'dart:io';
-
 
 
 
@@ -19,6 +11,7 @@ class DisplayLocation extends StatelessWidget {
   const DisplayLocation({required this.model, Key? key}) : super(key: key);
 
 
+  /*
   Future<Uint8List> generateDocument() async {
     final pw.Document doc = pw.Document();
 
@@ -60,8 +53,6 @@ class DisplayLocation extends StatelessWidget {
     return doc.save();
   }
 
-
-
   Future<File> getPdf() async {
     Uint8List uint8list = await generateDocument();
     Directory output = await getTemporaryDirectory();
@@ -70,6 +61,7 @@ class DisplayLocation extends StatelessWidget {
     return file;
   }
 
+  */
 
   @override
   Widget build(BuildContext context) {

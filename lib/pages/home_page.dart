@@ -1,26 +1,53 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:vaccpass/core/ui/responsive_safe_area.dart';
+import 'package:vaccpass/core/cache/preference_utils.dart';
+import 'package:vaccpass/core/usecases/constants.dart';
+import 'package:vaccpass/widgets/create_pin_code.dart';
+import 'package:vaccpass/widgets/scan_location.dart';
+import 'package:vaccpass/widgets/scan_vaccine.dart';
+import 'package:vaccpass/pages/locations_page.dart';
 import 'package:vaccpass/core/util/constants.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:vaccpass/pages/vaccine_page.dart';
+import 'package:after_layout/after_layout.dart';
+import 'package:vaccpass/core/util/keys.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:vaccpass/pages/scan_location_page.dart';
-import 'package:vaccpass/pages/scan_vaccine_page.dart';
-import 'history_scan_page.dart';
 import 'package:get/get.dart';
 import 'info_page.dart';
 
 
 
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with AfterLayoutMixin<HomePage>{
 
 
+  Future showDialogPinCode(BuildContext context) async {
+    try {
+      return await CoolAlert.show(
+          context: context,
+          type: CoolAlertType.info,
+          barrierDismissible: true,
+          title: 'set_pin'.tr,
+          text: 'prompted_enter_pin'.tr,
+          confirmBtnText: 'ok'.tr,
+          backgroundColor: primaryColor,
+          confirmBtnColor: primaryColor,
+          onConfirmBtnTap: () {
+            Navigator.pop(context);
+            Get.to(() => const CreatePinCode());
+          }
+      );
+    } catch(e) {
+      logger.e('$e');
+    }
+  }
 
   Future<bool> _onWillPop(BuildContext context) async {
     return await showDialog(
@@ -73,8 +100,13 @@ class _HomePageState extends State<HomePage> {
         onWillPop: () => _onWillPop(context),
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.grey,
             title: Text('app_name'.tr,
-              style: GoogleFonts.lato()
+              style: const TextStyle(
+                fontFamily: 'SansSerifFLF',
+                // fontWeight: FontWeight.bold,
+              ),
             ),
             actions: [
               IconButton(
@@ -85,144 +117,144 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           ),
-          body: Container(
-            decoration: BoxDecoration(
-              color: const Color(0xff7c94b6),
-              image: DecorationImage(
-                fit: BoxFit.fitHeight,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.3),
-                  BlendMode.dstATop,
-                ),
-                image: const AssetImage(
-                  'assets/images/bg.png',
-                ),
-              ),
-            ),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Material(
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: () => Get.to(() => const VaccineHistory()),
-                        child: SizedBox(
-                          width: Get.width - 50,
-                          height: Get.height/5.5,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/covid-passport.png',
-                                color: primaryColor,
-                                height: Get.height/8.5,
+          backgroundColor: Colors.grey.shade400,
+          body: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Material(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () => Get.to(() => const VaccinePage()),
+                      child: SizedBox(
+                        width: Get.width - 50,
+                        height: Get.height/5.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/images/covid-passport.png',
+                              color: primaryColor,
+                              height: Get.height/8.5,
+                            ),
+                            const SizedBox(height: 6),
+                            const Text('DISPLAY PASSPORT',
+                              style: TextStyle(
+                                fontFamily: 'SansSerifFLF',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
                               ),
-                              const SizedBox(height: 6),
-                              Text('DISPLAY PASSPORT',
-                                style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                )
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8,),
-                    Material(
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: () => Get.to(() => const ScanLocationPage()),
-                        child: SizedBox(
-                          width: Get.width - 50,
-                          height: Get.height/5.5,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/qr-code.png',
-                                color: Colors.yellow,
-                                height: Get.height/8.5,
+                  ),
+                  const SizedBox(height: 8,),
+                  Material(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () => Get.to(() => const ScanLocation()),
+                      child: SizedBox(
+                        width: Get.width - 50,
+                        height: Get.height/5.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/images/qr-code.png',
+                              color: Colors.yellow,
+                              height: Get.height/8.5,
+                            ),
+                            const SizedBox(height: 6),
+                            const Text('SCAN LOCATIONS',
+                              style: TextStyle(
+                                fontFamily: 'SansSerifFLF',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
                               ),
-                              const SizedBox(height: 6),
-                              Text('SCAN LOCATIONS',
-                                style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                )
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8,),
-                    Material(
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: () => Get.to(() => const ScanVaccinePage()),
-                        child: SizedBox(
-                          width: Get.width - 50,
-                          height: Get.height/5.5,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/path.png',
-                                color: Colors.yellow,
-                                height: Get.height/8.5,
+                  ),
+                  const SizedBox(height: 8,),
+                  Material(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () => Get.to(() => const ScanVaccine()),
+                      child: SizedBox(
+                        width: Get.width - 50,
+                        height: Get.height/5.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/images/path.png',
+                              color: Colors.yellow,
+                              height: Get.height/8.5,
+                            ),
+                            const SizedBox(height: 6),
+                            const Text('SCAN PASSPORT',
+                              style: TextStyle(
+                                fontFamily: 'SansSerifFLF',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
                               ),
-                              const SizedBox(height: 6),
-                              Text('SCAN PASSPORT',
-                                style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                )
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8,),
-                    Material(
-                      borderRadius: BorderRadius.circular(10),
-                      child: InkWell(
-                        onTap: () => Get.to(() => const LocationsHistory()),
-                        child: SizedBox(
-                          width: Get.width - 50,
-                          height: Get.height/5.5,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/location.png',
-                                color: primaryColor,
-                                height: Get.height/8.5,
+                  ),
+                  const SizedBox(height: 8,),
+                  Material(
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () => Get.to(() => const LocationsPage()),
+                      child: SizedBox(
+                        width: Get.width - 50,
+                        height: Get.height/5.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/images/location.png',
+                              color: primaryColor,
+                              height: Get.height/8.5,
+                            ),
+                            const SizedBox(height: 6),
+                            const Text('DISPLAY LOCATIONS',
+                              style: TextStyle(
+                                fontFamily: 'SansSerifFLF',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
                               ),
-                              const SizedBox(height: 6),
-                              Text('DISPLAY LOCATIONS',
-                                style: GoogleFonts.lato(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                )
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) async {
+    // await showDialogPinCode(context);
+    final check = PreferenceUtils.getBool(Keys.dialogPinCode, true);
+    if (check) {
+      await showDialogPinCode(context);
+      PreferenceUtils.setBool(Keys.dialogPinCode, false);
+    }
   }
 }

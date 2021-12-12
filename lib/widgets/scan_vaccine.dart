@@ -13,14 +13,14 @@ import 'dart:io';
 
 
 
-class ScanVaccinePage extends StatefulWidget {
-  const ScanVaccinePage({Key? key}) : super(key: key);
+class ScanVaccine extends StatefulWidget {
+  const ScanVaccine({Key? key}) : super(key: key);
 
   @override
-  _ScanVaccinePageState createState() => _ScanVaccinePageState();
+  _ScanVaccineState createState() => _ScanVaccineState();
 }
 
-class _ScanVaccinePageState extends State<ScanVaccinePage> {
+class _ScanVaccineState extends State<ScanVaccine> {
   static const bool allowTestIssuers = false;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -59,6 +59,7 @@ class _ScanVaccinePageState extends State<ScanVaccinePage> {
         MediaQuery.of(context).size.height < 100) ? 150.0 : 300.0;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('SCAN PASSPORT',
           style: GoogleFonts.lato(
             fontWeight: FontWeight.bold,
@@ -97,7 +98,13 @@ class _ScanVaccinePageState extends State<ScanVaccinePage> {
                   children: const [
                     Icon(MdiIcons.qrcode),
                     SizedBox(width: 4,),
-                    Text('Scanning..'),
+                    Text('Scanning..',
+                      style: TextStyle(
+                        fontFamily: 'SansSerifFLF',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
                   ],
                 )
             ),
@@ -154,9 +161,14 @@ class ValidCovidPassCard extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check_box_rounded, color: Colors.green, size: 60),
+            const Icon(Icons.check_box_rounded, color: Colors.green, size: 50),
             Text('saved_success'.tr,
-              style: const TextStyle(fontSize: 10, color: Colors.green),
+              style: const TextStyle(
+                fontFamily: 'SansSerifFLF',
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+                color: Colors.green
+              ),
             ),
           ],
         ),
@@ -193,13 +205,25 @@ class CovidPassErrorCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Icon(Icons.cancel_rounded, color: Colors.red, size: 60),
-              Text('ERROR', style: TextStyle(fontSize: 10, color: Colors.red)),
+              Icon(Icons.cancel_rounded, color: Colors.red, size: 40),
+              Text('ERROR', style: TextStyle(
+                fontFamily: 'SansSerifFLF',
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+                fontSize: 14,
+              )),
             ],
           ),
           const SizedBox(width: 20),
           Flexible(
-            child: Text(friendlyMessage(), style: const TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(friendlyMessage(),
+              style: const TextStyle(
+                fontFamily: 'SansSerifFLF',
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+                fontSize: 14,
+              ),
+            ),
           ),
         ],
       ),

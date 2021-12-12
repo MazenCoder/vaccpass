@@ -1,16 +1,10 @@
 import 'package:vaccpass/core/database/app_database.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:pdf/pdf.dart';
-import 'dart:typed_data';
-import 'dart:convert';
-import 'dart:io';
-
 
 
 
@@ -19,6 +13,7 @@ class DisplayPassport extends StatelessWidget {
   const DisplayPassport({required this.model, Key? key}) : super(key: key);
 
 
+  /*
   Future<Uint8List> generateDocument() async {
     final pw.Document doc = pw.Document();
 
@@ -60,8 +55,6 @@ class DisplayPassport extends StatelessWidget {
     return doc.save();
   }
 
-
-
   Future<File> getPdf() async {
     Uint8List uint8list = await generateDocument();
     Directory output = await getTemporaryDirectory();
@@ -69,7 +62,7 @@ class DisplayPassport extends StatelessWidget {
     await file.writeAsBytes(uint8list);
     return file;
   }
-
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -87,25 +80,28 @@ class DisplayPassport extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
           children: [
-            QrImage(
-              data: model.encoded??'',
-              version: QrVersions.auto,
-              size: Get.width-60,
+            Expanded(
+              child: QrImage(
+                data: model.encoded??'',
+                version: QrVersions.auto,
+                // size: Get.width-100,
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                const SizedBox(height: 5),
                 Text(model.givenName??'',
                   style: GoogleFonts.acme(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(width: 5, height: 5),
+                const SizedBox(height: 5),
                 Text(DateFormat('dd MMM yyyy').format(model.dob!),
                   style: GoogleFonts.acme(
                     fontSize: 14,
@@ -113,7 +109,19 @@ class DisplayPassport extends StatelessWidget {
                 ),
 
               ],
-            )
+            ),
+
+            const SizedBox(height: 8,),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.memory(
+                  appUtils.convertImageBase64(model),
+                  // height: 30,
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
           ],
         ),
       ),

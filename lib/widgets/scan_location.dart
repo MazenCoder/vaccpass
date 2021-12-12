@@ -3,32 +3,29 @@ import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:vaccpass/exceptions.dart';
 
 
-
-class ScanLocationPage extends StatefulWidget {
-  const ScanLocationPage({Key? key}) : super(key: key);
+class ScanLocation extends StatefulWidget {
+  const ScanLocation({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ScanLocationPageState();
+  State<StatefulWidget> createState() => _ScanLocationState();
 }
 
-class _ScanLocationPageState extends State<ScanLocationPage> {
+class _ScanLocationState extends State<ScanLocation> {
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   String? errorMessage;
   Barcode? covidPass;
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
+
   @override
   void reassemble() {
     super.reassemble();
@@ -43,6 +40,7 @@ class _ScanLocationPageState extends State<ScanLocationPage> {
     final db = Provider.of<AppDatabase>(context);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('SCAN LOCATION',
             style: GoogleFonts.lato(
               fontWeight: FontWeight.bold,
@@ -68,85 +66,17 @@ class _ScanLocationPageState extends State<ScanLocationPage> {
                   children: const [
                     Icon(MdiIcons.qrcode),
                     SizedBox(width: 4,),
-                    Text('Scanning..'),
+                    Text('Scanning..',
+                      style: TextStyle(
+                        fontFamily: 'SansSerifFLF',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
                   ],
                 )
             ),
           ),
-
-          /*
-          Expanded(
-            flex: 1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                if (result != null)
-                  FutureBuilder<TracerEntity?>(
-                    future: db.tracerEntitysDao.getTracerQr(result!.code??''),
-                      builder: (context, snapTracer) {
-                        switch(snapTracer.connectionState) {
-                          case ConnectionState.waiting: return const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(22),
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                          default:
-                            if (snapTracer.hasData) {
-                              return Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.check_box_rounded, color: Colors.green, size: 60),
-                                    Text('saved_success'.tr,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Center(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(MdiIcons.qrcode),
-                                        SizedBox(width: 4,),
-                                        Text('Scanning..'),
-                                      ],
-                                    )
-                                ),
-                              );
-                            }
-                        }
-                      }
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(MdiIcons.qrcode),
-                        SizedBox(width: 4,),
-                        Text('Scanning..',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          )
-
-           */
         ],
       ),
     );
@@ -237,25 +167,17 @@ class ValidCovidPassCard extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check_box_rounded, color: Colors.green, size: 60),
+            const Icon(Icons.check_box_rounded, color: Colors.green, size: 50),
             Text('saved_success'.tr,
-              style: const TextStyle(fontSize: 10, color: Colors.green),
+              style: const TextStyle(
+                fontFamily: 'SansSerifFLF',
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+                color: Colors.green
+              ),
             ),
           ],
         ),
-        // const SizedBox(width: 30),
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-            // Text(covidPass.format.formatName??'',
-            //     style: const TextStyle(fontWeight: FontWeight.bold)),
-            // Text(covidPass.familyName ?? "",
-            //     style: const TextStyle(fontWeight: FontWeight.bold)),
-            // const SizedBox(height: 8),
-            // if (covidPass.dob != null)
-            //   Text(DateFormat('dd MMM yyyy').format(covidPass.dob!)),
-          // ],
-        // ),
       ],
     );
   }
@@ -276,11 +198,18 @@ class CovidPassErrorCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Icon(Icons.cancel_rounded, color: Colors.red, size: 60),
-              Text('ERROR', style: TextStyle(fontSize: 10, color: Colors.red)),
+              Icon(Icons.cancel_rounded, color: Colors.red, size: 40),
+              Text('ERROR',
+                style: TextStyle(
+                  fontFamily: 'SansSerifFLF',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.red
+                ),
+              ),
             ],
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 16),
           Flexible(
             child: Text(friendlyMessage(), style: const TextStyle(fontWeight: FontWeight.bold)),
           ),

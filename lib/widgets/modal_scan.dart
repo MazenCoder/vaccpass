@@ -1,10 +1,10 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:vaccpass/pages/scan_location_page.dart';
+import 'package:vaccpass/widgets/scan_location.dart';
 import 'package:vaccpass/core/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vaccpass/pages/scan_vaccine_page.dart';
+import 'package:vaccpass/widgets/scan_vaccine.dart';
 
 
 
@@ -41,7 +41,7 @@ class ModalScan extends StatelessWidget {
             ),
             onTap: () async {
               Navigator.of(context).pop();
-              Get.to(() => const ScanVaccinePage());
+              Get.to(() => const ScanVaccine());
             }
           ),
           ListTile(
@@ -56,7 +56,7 @@ class ModalScan extends StatelessWidget {
             ),
             onTap: () async {
               Navigator.of(context).pop();
-              Get.to(() => const ScanLocationPage());
+              Get.to(() => const ScanLocation());
             }
           ),
           Padding(

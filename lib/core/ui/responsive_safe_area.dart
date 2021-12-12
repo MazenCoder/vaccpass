@@ -15,7 +15,7 @@ class ResponsiveSafeArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: primaryColor,
+      color: Colors.grey,
       child: SafeArea(
         bottom: false,
         child: responsiveBuilder(context)

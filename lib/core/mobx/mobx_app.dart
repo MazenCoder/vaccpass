@@ -13,4 +13,12 @@ abstract class MobxAppBase with Store {
   void onPageChanged(int val) {
     currentIndex = val;
   }
+
+  @observable
+  bool obscureText = true;
+
+  @action
+  void toggle(bool val) {
+    obscureText = val;
+  }
 }

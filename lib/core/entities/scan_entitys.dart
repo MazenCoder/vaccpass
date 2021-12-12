@@ -9,6 +9,7 @@ class ScanEntitys extends Table {
   TextColumn get givenName => text().nullable().withDefault(const Constant(''))();
   TextColumn get familyName => text().nullable().withDefault(const Constant(''))();
   TextColumn get encoded => text().nullable().withDefault(const Constant(''))();
+  TextColumn get imageId => text().nullable().withDefault(const Constant(''))();
   DateTimeColumn get dob => dateTime().nullable().withDefault(Constant(DateTime.now()))();
   DateTimeColumn get date => dateTime().nullable().withDefault(Constant(DateTime.now()))();
 
@@ -26,7 +27,7 @@ class ScanEntitysDao extends DatabaseAccessor<AppDatabase>
   Stream<List<ScanEntity>> watchAllScanEntity() => select(scanEntitys).watch();
   Future<List<ScanEntity>> getAllScanEntity() => select(scanEntitys).get();
 
-  Future<void> insertAllScanEntity(List<Insertable<ScanEntity>> rows) => batch((batch) =>
+  Future<void> insertAllScanEntity(List<Insertable<PinEntity>> rows) => batch((batch) =>
       batch.insertAll(scanEntitys, rows, mode: InsertMode.replace));
   Future insertScanEntity(Insertable<ScanEntity> row) => into(scanEntitys).insert(row, mode: InsertMode.replace);
   Future updateScanEntity(Insertable<ScanEntity> row) => update(scanEntitys).replace(row);
@@ -38,5 +39,11 @@ class ScanEntitysDao extends DatabaseAccessor<AppDatabase>
             (t) => OrderingTerm(expression: t.date, mode: OrderingMode.desc)
       ])
     ).watch();
+  }
+
+  Future<void> updateScanImage({required String id, required String imageId}) {
+    return (update(scanEntitys)
+      ..where((t) => t.id.equals(id))
+    ).write(ScanEntity(id: id, imageId: imageId));
   }
 }

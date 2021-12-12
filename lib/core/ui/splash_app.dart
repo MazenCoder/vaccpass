@@ -1,14 +1,13 @@
+import 'package:vaccpass/widgets/pin_code_verification.dart';
 import 'package:vaccpass/core/notifier/model_notifier.dart';
-import 'package:vaccpass/navigation/navigation_app.dart';
+import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:package_info/package_info.dart';
+import 'package:vaccpass/pages/home_page.dart';
 import 'package:vaccpass/core/util/img.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math' as math;
-
-import 'package:vaccpass/pages/home_page.dart';
 
 
 
@@ -84,7 +83,13 @@ class _SplashAppState extends State<SplashApp>
     String version = packageInfo.version;
     context.read<ModelNotifier>().setVersion(version);
     await Future.delayed(const Duration(seconds: 2));
-    Get.offAll(() => const HomePage());
+    await appUtils.checkPinCode().then((value) {
+      if (value) {
+        Get.offAll(() => const PinCodeVerification());
+      } else {
+        Get.offAll(() => const HomePage());
+      }
+    });
   }
 
 
