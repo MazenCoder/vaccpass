@@ -1,11 +1,15 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:vaccpass/core/mobx/mobx_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:vaccpass/covid_pass_model.dart';
 import 'package:vaccpass/did_client.dart';
 import 'package:vaccpass/exceptions.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
@@ -14,21 +18,25 @@ import 'dart:io';
 
 
 class ScanVaccine extends StatefulWidget {
-  const ScanVaccine({Key? key}) : super(key: key);
+  final VaccineEntity? model;
+  const ScanVaccine({this.model, Key? key}) : super(key: key);
 
   @override
   _ScanVaccineState createState() => _ScanVaccineState();
 }
 
 class _ScanVaccineState extends State<ScanVaccine> {
-  static const bool allowTestIssuers = false;
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  static const bool allowTestIssuers = false;
   final DidClient didClient = DidClient();
-  Barcode? result;
+  final idQrcode = const Uuid().v4();
+  final MobxApp _mobxApp = MobxApp();
   QRViewController? controller;
-  CovidPassModel? covidPass;
-  String? errorMessage;
+  // CovidPassModel? covidPass;
+  // String? errorMessage;
+  bool isSaved = false;
+  Barcode? result;
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -87,6 +95,35 @@ class _ScanVaccineState extends State<ScanVaccine> {
             ),
           ),
           Expanded(
+            child: Observer(
+              builder: (_) {
+                if (_mobxApp.covidPass != null) {
+                  return ValidCovidPassCard(covidPass: _mobxApp.covidPass!);
+                } else if (_mobxApp.errorMessage != null) {
+                  return CovidPassErrorCard(error: _mobxApp.errorMessage!);
+                } else {
+                  return Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(MdiIcons.qrcode),
+                          SizedBox(width: 4,),
+                          Text('Scanning..',
+                            style: TextStyle(
+                              fontFamily: 'SansSerifFLF',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                        ],
+                      )
+                  );
+                }
+              },
+            ),
+          ),
+          /*
+          Expanded(
             flex: 1,
             child: covidPass != null
                 ? ValidCovidPassCard(covidPass: covidPass!)
@@ -109,6 +146,7 @@ class _ScanVaccineState extends State<ScanVaccine> {
                 )
             ),
           )
+         */
         ],
       ),
     );
@@ -124,19 +162,20 @@ class _ScanVaccineState extends State<ScanVaccine> {
           pass = await CovidPassModel.parse(scanData.code!,
               didClient: didClient, allowTestIssuers: allowTestIssuers);
           if (pass != null) {
-            await appUtils.saveScanQrcode(pass, scanData.code);
+            await appUtils.saveScanQrcode(widget.model, pass, scanData.code).then((value) => isSaved = value);
           }
         } on CovidPassException catch (e) {
           error = e.cause.toString();
         } on CoseException catch (e) {
           error = e.cause.toString();
         }
+        _mobxApp.setCovidPassModel(pass);
+        _mobxApp.setErrorMessage(error);
       }
 
-      setState(() {
-        covidPass = pass;
-        errorMessage = error;
-      });
+      if (isSaved) {
+        await Future.delayed(const Duration(seconds: 2)).then((value) => Get.back());
+      }
     });
   }
 

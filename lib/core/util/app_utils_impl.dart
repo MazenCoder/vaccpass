@@ -1,15 +1,21 @@
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/models/tracer_model.dart';
 import 'package:vaccpass/core/error/failures.dart';
 import 'package:vaccpass/covid_pass_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:uuid/uuid.dart';
+import 'package:get/get.dart';
+import 'flash_helper.dart';
 import 'dart:typed_data';
 import 'app_utils.dart';
 import 'dart:convert';
 import 'keys.dart';
 import 'dart:io';
+
 
 
 
@@ -26,25 +32,74 @@ class AppUtilsImpl extends AppUtils {
     required this.database});
 
   @override
-  Future<void> saveScanQrcode(CovidPassModel pass, String? code) async {
-    if (code != null) {
-      final id = '${pass.givenName}${pass.familyName}';
-      final entity = ScanEntity(id: id,
-        familyName: pass.familyName??'',
-        givenName:  pass.givenName??'',
-        date: DateTime.now(),
-        dob: pass.dob,
-        encoded: code,
+  Future<bool> saveScanQrcode(VaccineEntity? model, CovidPassModel pass, String? code) async {
+    try {
+      if (model != null && code != null) {
+        final entity = VaccineEntity(
+          id: model.id,
+          familyName: pass.familyName??'',
+          givenName:  pass.givenName??'',
+          imageId: model.imageId,
+          imageVaccine: '',
+          date: model.date,
+          dob: pass.dob,
+          encoded: code,
+        );
+        await database.vaccineEntitysDao.insertVaccine(entity);
+        return true;
+      } else if (code != null && model == null) {
+        final id = '${pass.givenName}${pass.familyName}';
+        final entity = VaccineEntity(id: id,
+          familyName: pass.familyName??'',
+          givenName:  pass.givenName??'',
+          date: DateTime.now(),
+          dob: pass.dob,
+          encoded: code,
+        );
+        await database.vaccineEntitysDao.insertVaccine(entity);
+        return true;
+      }
+      return false;
+    } catch(e) {
+      logger.e(e);
+      return false;
+    }
+  }
+
+  @override
+  Future<void> saveFilePassport(BuildContext context, File croppedFile) async {
+    try {
+      logger.i('saved');
+      final id = const Uuid().v4();
+      // Uint8List audioByte = await _readFileByte(croppedFile.path);
+      Uint8List? audioByte = await compressFile(croppedFile);
+      String img = base64.encode(audioByte!);
+      final entity = VaccineEntity(
+        id: id, date: DateTime.now(),
+        imageVaccine: img,
       );
-      await database.scanEntitysDao.insertScanEntity(entity);
+      await database.vaccineEntitysDao.insertVaccine(entity);
+      logger.i('saved 2');
+      FlashHelper.successBar(
+        context: context,
+        title: 'Scan Passport',
+        message: 'saved_success'.tr,
+      );
+    } catch(e) {
+      logger.e(e);
+      FlashHelper.errorBar(
+        context: context,
+        title: 'Scan Passport',
+        message: 'something_wrong'.tr,
+      );
     }
   }
 
 
   @override
   Future<void> clearHistory() async {
-    await database.delete(database.scanEntitys).go();
-    await database.delete(database.tracerEntitys).go();
+    await database.delete(database.vaccineEntitys).go();
+    await database.delete(database.locationEntitys).go();
   }
 
   @override
@@ -58,7 +113,7 @@ class AppUtilsImpl extends AppUtils {
         final model = tracerModelFromJson(decoded, code);
         if (decoded != null && model != null) {
           logger.i(model.toJsonModel());
-          await database.tracerEntitysDao.insertTracerEntity(model);
+          await database.locationEntitysDao.insertLocation(model);
         }
       }
     } catch(e) {
@@ -67,27 +122,43 @@ class AppUtilsImpl extends AppUtils {
     }
   }
 
-  Future<void> convertFileToBase64(ScanEntity entity, File file) async {
+  @override
+  Future<void> convertFileToBase64(VaccineEntity entity, File file) async {
     try{
-      Uint8List audioByte = await _readFileByte(file.path);
-      String img = base64.encode(audioByte);
-      await database.scanEntitysDao.updateScanImage(id: entity.id, imageId: img);
+      // Uint8List audioByte = await _readFileByte(file.path);
+      Uint8List? audioByte = await compressFile(file);
+      String img = base64.encode(audioByte!);
+      // VaccineEntity(id: entity.id, imageId: img, );
+      await database.vaccineEntitysDao.updateScanImage(id: entity.id, imageId: img);
     } catch (e) {
       logger.e(e);
     }
   }
 
+  /*
   Future<Uint8List> _readFileByte(String filePath) async {
     Uri myUri = Uri.parse(filePath);
     File audioFile = File.fromUri(myUri);
     Uint8List bytes = await audioFile.readAsBytes();
-    // return Uint8List.fromList(bytes);
-    return bytes;
+    return Uint8List.fromList(bytes);
+    // return bytes;
+  }
+  */
+
+  Future<Uint8List?> compressFile(File file) async {
+    var result = await FlutterImageCompress.compressWithFile(
+      file.absolute.path,
+      minWidth: 2300,
+      minHeight: 1500,
+      quality: 50,
+      rotate: 0,
+    );
+    return result;
   }
 
-  Uint8List convertImageBase64(ScanEntity entity) {
-    final img = entity.imageId??'';
-    return const Base64Decoder().convert(img);
+  @override
+  Uint8List convertImageBase64(String? img) {
+    return const Base64Decoder().convert(img??'');
   }
 
   @override
@@ -116,6 +187,149 @@ class AppUtilsImpl extends AppUtils {
   Future<void> activateDeactivatePin(PinEntity? entity, bool val) async {
     if (entity != null) {
       await database.pinEntitysDao.updatePinCode(id: entity.id, active: val);
+    }
+  }
+
+  @override
+  Future<void> editVaccine({required BuildContext context,
+  required VaccineEntity model, required bool deleteEncodedQr,
+    required bool deletePhotoQr, required bool deletePhotoID}) async {
+    if (deleteEncodedQr) {
+      final checkConfirm = await confirmDelete(context, 'QR Code');
+      if (checkConfirm) {
+        final entity = VaccineEntity(
+          id: model.id,
+          imageVaccine: model.imageVaccine,
+          familyName: model.familyName,
+          givenName: model.givenName,
+          imageId: model.imageId,
+          date: model.date,
+          dob: model.dob,
+          encoded:  '',
+        );
+        await database.vaccineEntitysDao.updateVaccineById(id: model.id, entity: entity);
+      }
+    } else if (deletePhotoQr) {
+      final checkConfirm = await confirmDelete(context, 'Photo Qr Code');
+      if (checkConfirm) {
+        final entity = VaccineEntity(
+          id: model.id,
+          familyName: model.familyName,
+          givenName: model.givenName,
+          encoded: model.encoded,
+          imageId: model.imageId,
+          date: model.date,
+          dob: model.dob,
+          imageVaccine: '',
+        );
+        await database.vaccineEntitysDao.updateVaccineById(id: model.id, entity: entity);
+      }
+    } else if (deletePhotoID) {
+      final checkConfirm = await confirmDelete(context, 'Photo ID');
+      if (checkConfirm) {
+        final entity = VaccineEntity(
+          id: model.id,
+          imageVaccine: model.imageVaccine,
+          familyName: model.familyName,
+          givenName: model.givenName,
+          encoded: model.encoded,
+          date: model.date,
+          dob: model.dob,
+          imageId: '',
+        );
+        await database.vaccineEntitysDao.updateVaccineById(id: model.id, entity: entity);
+      }
+    }
+  }
+
+  Future<bool> confirmDelete(BuildContext context, String content) async {
+    return await showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: const Text('Delete',
+          style: TextStyle(
+            fontFamily: 'SansSerifFLF',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text('Are you sure you want to delete this $content',
+          style: const TextStyle(
+            fontFamily: 'SansSerifFLF',
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Delete'),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ],
+      );
+    })??false;
+  }
+
+  @override
+  Future<void> editGivenNameVaccine({required BuildContext context,
+    required VaccineEntity model, required String name}) async {
+    try {
+      final entity = VaccineEntity(
+        id: model.id,
+        imageVaccine: model.imageVaccine,
+        familyName: model.familyName,
+        givenName: name,
+        encoded: model.encoded,
+        date: model.date,
+        dob: model.dob,
+        imageId: model.imageId,
+      );
+      await database.vaccineEntitysDao.updateVaccineById(id: model.id, entity: entity);
+      FlashHelper.successBar(
+        context: context,
+        title: 'Edit Name',
+        message: 'saved_success'.tr,
+      );
+    } catch(e) {
+      logger.e(e);
+      FlashHelper.errorBar(
+        context: context,
+        title: 'Edit Name',
+        message: 'something_wrong'.tr,
+      );
+    }
+  }
+
+  @override
+  Future<void> editVaccineFilePassport(BuildContext context, VaccineEntity model, File croppedFile) async {
+    try {
+      Uint8List? audioByte = await compressFile(croppedFile);
+      String img = base64.encode(audioByte!);
+      final entity = VaccineEntity(
+        id: model.id,
+        familyName: model.familyName,
+        givenName: model.givenName,
+        imageId: model.imageId,
+        imageVaccine: img,
+        date: model.date,
+        dob: model.dob,
+        encoded: '',
+      );
+      await database.vaccineEntitysDao.insertVaccine(entity);
+      FlashHelper.successBar(
+        context: context,
+        title: 'Scan Passport',
+        message: 'saved_success'.tr,
+      );
+    } catch(e) {
+      logger.e(e);
+      FlashHelper.errorBar(
+        context: context,
+        title: 'Scan Passport',
+        message: 'something_wrong'.tr,
+      );
     }
   }
 }

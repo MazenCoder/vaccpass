@@ -39,6 +39,36 @@ mixin _$MobxApp on MobxAppBase, Store {
     });
   }
 
+  final _$covidPassAtom = Atom(name: 'MobxAppBase.covidPass');
+
+  @override
+  CovidPassModel? get covidPass {
+    _$covidPassAtom.reportRead();
+    return super.covidPass;
+  }
+
+  @override
+  set covidPass(CovidPassModel? value) {
+    _$covidPassAtom.reportWrite(value, super.covidPass, () {
+      super.covidPass = value;
+    });
+  }
+
+  final _$errorMessageAtom = Atom(name: 'MobxAppBase.errorMessage');
+
+  @override
+  String? get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String? value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
   final _$MobxAppBaseActionController = ActionController(name: 'MobxAppBase');
 
   @override
@@ -64,10 +94,34 @@ mixin _$MobxApp on MobxAppBase, Store {
   }
 
   @override
+  void setCovidPassModel(CovidPassModel? val) {
+    final _$actionInfo = _$MobxAppBaseActionController.startAction(
+        name: 'MobxAppBase.setCovidPassModel');
+    try {
+      return super.setCovidPassModel(val);
+    } finally {
+      _$MobxAppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setErrorMessage(String? val) {
+    final _$actionInfo = _$MobxAppBaseActionController.startAction(
+        name: 'MobxAppBase.setErrorMessage');
+    try {
+      return super.setErrorMessage(val);
+    } finally {
+      _$MobxAppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 currentIndex: ${currentIndex},
-obscureText: ${obscureText}
+obscureText: ${obscureText},
+covidPass: ${covidPass},
+errorMessage: ${errorMessage}
     ''';
   }
 }

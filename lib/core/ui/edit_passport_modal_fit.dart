@@ -1,5 +1,7 @@
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
+import 'package:vaccpass/widgets/scan_vaccine.dart';
 import 'package:vaccpass/core/util/constants.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,9 +11,9 @@ import 'dart:io';
 
 
 
-class ModalFit extends StatelessWidget {
-  final VaccineEntity entity;
-  const ModalFit({required this.entity, Key? key}) : super(key: key);
+class EditPassportModalFit extends StatelessWidget {
+  final VaccineEntity model;
+  const EditPassportModalFit({required this.model, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,26 @@ class ModalFit extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 5, left: 16, right: 16),
-            child: Text('add_license_or_id'.tr,
+            child: Text('scan_take_library'.tr,
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
+          ),
+          ListTile(
+            title: Text('scan_qrcode'.tr,
+              style: const TextStyle(
+                fontSize: 16,
+                color: primaryColor,
+              ),
+            ),
+            leading: const Icon(MdiIcons.qrcodeScan,
+              color: primaryColor,
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Get.to(() => ScanVaccine(model: model));
+            }
           ),
           ListTile(
             title: Text('photo_library'.tr,
@@ -41,7 +58,6 @@ class ModalFit extends StatelessWidget {
               color: primaryColor,
             ),
             onTap: () async {
-              Navigator.of(context).pop();
               final pickedFile = await picker.pickImage(source: ImageSource.gallery);
               if (pickedFile != null) {
                 File? croppedFile = await ImageCropper.cropImage(
@@ -64,8 +80,9 @@ class ModalFit extends StatelessWidget {
                     )
                 );
                 if (croppedFile != null) {
-                  await appUtils.convertFileToBase64(entity, croppedFile);
+                  await appUtils.editVaccineFilePassport(context, model, croppedFile);
                 }
+                Navigator.of(context).pop();
               }
             }
           ),
@@ -81,7 +98,6 @@ class ModalFit extends StatelessWidget {
               color: primaryColor,
             ),
             onTap: () async {
-              Navigator.of(context).pop();
               final pickedFile = await picker.pickImage(source: ImageSource.camera);
               if (pickedFile != null) {
                 File? croppedFile = await ImageCropper.cropImage(
@@ -104,8 +120,9 @@ class ModalFit extends StatelessWidget {
                     )
                 );
                 if (croppedFile != null) {
-                  await appUtils.convertFileToBase64(entity, croppedFile);
+                  await appUtils.editVaccineFilePassport(context, model, croppedFile);
                 }
+                Navigator.of(context).pop();
               }
             }
           ),

@@ -7,26 +7,29 @@ part of 'app_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class ScanEntity extends DataClass implements Insertable<ScanEntity> {
+class VaccineEntity extends DataClass implements Insertable<VaccineEntity> {
   final String id;
   final String? givenName;
   final String? familyName;
   final String? encoded;
   final String? imageId;
+  final String? imageVaccine;
   final DateTime? dob;
   final DateTime? date;
-  ScanEntity(
+  VaccineEntity(
       {required this.id,
       this.givenName,
       this.familyName,
       this.encoded,
       this.imageId,
+      this.imageVaccine,
       this.dob,
       this.date});
-  factory ScanEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory VaccineEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return ScanEntity(
+    return VaccineEntity(
       id: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       givenName: const StringType()
@@ -37,6 +40,8 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
           .mapFromDatabaseResponse(data['${effectivePrefix}encoded']),
       imageId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}image_id']),
+      imageVaccine: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}image_vaccine']),
       dob: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}dob']),
       date: const DateTimeType()
@@ -59,6 +64,9 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
     if (!nullToAbsent || imageId != null) {
       map['image_id'] = Variable<String?>(imageId);
     }
+    if (!nullToAbsent || imageVaccine != null) {
+      map['image_vaccine'] = Variable<String?>(imageVaccine);
+    }
     if (!nullToAbsent || dob != null) {
       map['dob'] = Variable<DateTime?>(dob);
     }
@@ -68,8 +76,8 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
     return map;
   }
 
-  ScanEntitysCompanion toCompanion(bool nullToAbsent) {
-    return ScanEntitysCompanion(
+  VaccineEntitysCompanion toCompanion(bool nullToAbsent) {
+    return VaccineEntitysCompanion(
       id: Value(id),
       givenName: givenName == null && nullToAbsent
           ? const Value.absent()
@@ -83,20 +91,24 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       imageId: imageId == null && nullToAbsent
           ? const Value.absent()
           : Value(imageId),
+      imageVaccine: imageVaccine == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageVaccine),
       dob: dob == null && nullToAbsent ? const Value.absent() : Value(dob),
       date: date == null && nullToAbsent ? const Value.absent() : Value(date),
     );
   }
 
-  factory ScanEntity.fromJson(Map<String, dynamic> json,
+  factory VaccineEntity.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return ScanEntity(
+    return VaccineEntity(
       id: serializer.fromJson<String>(json['id']),
       givenName: serializer.fromJson<String?>(json['givenName']),
       familyName: serializer.fromJson<String?>(json['familyName']),
       encoded: serializer.fromJson<String?>(json['encoded']),
       imageId: serializer.fromJson<String?>(json['imageId']),
+      imageVaccine: serializer.fromJson<String?>(json['imageVaccine']),
       dob: serializer.fromJson<DateTime?>(json['dob']),
       date: serializer.fromJson<DateTime?>(json['date']),
     );
@@ -110,36 +122,40 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
       'familyName': serializer.toJson<String?>(familyName),
       'encoded': serializer.toJson<String?>(encoded),
       'imageId': serializer.toJson<String?>(imageId),
+      'imageVaccine': serializer.toJson<String?>(imageVaccine),
       'dob': serializer.toJson<DateTime?>(dob),
       'date': serializer.toJson<DateTime?>(date),
     };
   }
 
-  ScanEntity copyWith(
+  VaccineEntity copyWith(
           {String? id,
           String? givenName,
           String? familyName,
           String? encoded,
           String? imageId,
+          String? imageVaccine,
           DateTime? dob,
           DateTime? date}) =>
-      ScanEntity(
+      VaccineEntity(
         id: id ?? this.id,
         givenName: givenName ?? this.givenName,
         familyName: familyName ?? this.familyName,
         encoded: encoded ?? this.encoded,
         imageId: imageId ?? this.imageId,
+        imageVaccine: imageVaccine ?? this.imageVaccine,
         dob: dob ?? this.dob,
         date: date ?? this.date,
       );
   @override
   String toString() {
-    return (StringBuffer('ScanEntity(')
+    return (StringBuffer('VaccineEntity(')
           ..write('id: $id, ')
           ..write('givenName: $givenName, ')
           ..write('familyName: $familyName, ')
           ..write('encoded: $encoded, ')
           ..write('imageId: $imageId, ')
+          ..write('imageVaccine: $imageVaccine, ')
           ..write('dob: $dob, ')
           ..write('date: $date')
           ..write(')'))
@@ -147,53 +163,58 @@ class ScanEntity extends DataClass implements Insertable<ScanEntity> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, givenName, familyName, encoded, imageId, dob, date);
+  int get hashCode => Object.hash(
+      id, givenName, familyName, encoded, imageId, imageVaccine, dob, date);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ScanEntity &&
+      (other is VaccineEntity &&
           other.id == this.id &&
           other.givenName == this.givenName &&
           other.familyName == this.familyName &&
           other.encoded == this.encoded &&
           other.imageId == this.imageId &&
+          other.imageVaccine == this.imageVaccine &&
           other.dob == this.dob &&
           other.date == this.date);
 }
 
-class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
+class VaccineEntitysCompanion extends UpdateCompanion<VaccineEntity> {
   final Value<String> id;
   final Value<String?> givenName;
   final Value<String?> familyName;
   final Value<String?> encoded;
   final Value<String?> imageId;
+  final Value<String?> imageVaccine;
   final Value<DateTime?> dob;
   final Value<DateTime?> date;
-  const ScanEntitysCompanion({
+  const VaccineEntitysCompanion({
     this.id = const Value.absent(),
     this.givenName = const Value.absent(),
     this.familyName = const Value.absent(),
     this.encoded = const Value.absent(),
     this.imageId = const Value.absent(),
+    this.imageVaccine = const Value.absent(),
     this.dob = const Value.absent(),
     this.date = const Value.absent(),
   });
-  ScanEntitysCompanion.insert({
+  VaccineEntitysCompanion.insert({
     required String id,
     this.givenName = const Value.absent(),
     this.familyName = const Value.absent(),
     this.encoded = const Value.absent(),
     this.imageId = const Value.absent(),
+    this.imageVaccine = const Value.absent(),
     this.dob = const Value.absent(),
     this.date = const Value.absent(),
   }) : id = Value(id);
-  static Insertable<ScanEntity> custom({
+  static Insertable<VaccineEntity> custom({
     Expression<String>? id,
     Expression<String?>? givenName,
     Expression<String?>? familyName,
     Expression<String?>? encoded,
     Expression<String?>? imageId,
+    Expression<String?>? imageVaccine,
     Expression<DateTime?>? dob,
     Expression<DateTime?>? date,
   }) {
@@ -203,25 +224,28 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
       if (familyName != null) 'family_name': familyName,
       if (encoded != null) 'encoded': encoded,
       if (imageId != null) 'image_id': imageId,
+      if (imageVaccine != null) 'image_vaccine': imageVaccine,
       if (dob != null) 'dob': dob,
       if (date != null) 'date': date,
     });
   }
 
-  ScanEntitysCompanion copyWith(
+  VaccineEntitysCompanion copyWith(
       {Value<String>? id,
       Value<String?>? givenName,
       Value<String?>? familyName,
       Value<String?>? encoded,
       Value<String?>? imageId,
+      Value<String?>? imageVaccine,
       Value<DateTime?>? dob,
       Value<DateTime?>? date}) {
-    return ScanEntitysCompanion(
+    return VaccineEntitysCompanion(
       id: id ?? this.id,
       givenName: givenName ?? this.givenName,
       familyName: familyName ?? this.familyName,
       encoded: encoded ?? this.encoded,
       imageId: imageId ?? this.imageId,
+      imageVaccine: imageVaccine ?? this.imageVaccine,
       dob: dob ?? this.dob,
       date: date ?? this.date,
     );
@@ -245,6 +269,9 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
     if (imageId.present) {
       map['image_id'] = Variable<String?>(imageId.value);
     }
+    if (imageVaccine.present) {
+      map['image_vaccine'] = Variable<String?>(imageVaccine.value);
+    }
     if (dob.present) {
       map['dob'] = Variable<DateTime?>(dob.value);
     }
@@ -256,12 +283,13 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
 
   @override
   String toString() {
-    return (StringBuffer('ScanEntitysCompanion(')
+    return (StringBuffer('VaccineEntitysCompanion(')
           ..write('id: $id, ')
           ..write('givenName: $givenName, ')
           ..write('familyName: $familyName, ')
           ..write('encoded: $encoded, ')
           ..write('imageId: $imageId, ')
+          ..write('imageVaccine: $imageVaccine, ')
           ..write('dob: $dob, ')
           ..write('date: $date')
           ..write(')'))
@@ -269,11 +297,11 @@ class ScanEntitysCompanion extends UpdateCompanion<ScanEntity> {
   }
 }
 
-class $ScanEntitysTable extends ScanEntitys
-    with TableInfo<$ScanEntitysTable, ScanEntity> {
+class $VaccineEntitysTable extends VaccineEntitys
+    with TableInfo<$VaccineEntitysTable, VaccineEntity> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $ScanEntitysTable(this._db, [this._alias]);
+  $VaccineEntitysTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
       'id', aliasedName, false,
@@ -283,7 +311,7 @@ class $ScanEntitysTable extends ScanEntitys
       'given_name', aliasedName, true,
       typeName: 'TEXT',
       requiredDuringInsert: false,
-      defaultValue: const Constant(''));
+      defaultValue: const Constant('New Passport'));
   final VerificationMeta _familyNameMeta = const VerificationMeta('familyName');
   late final GeneratedColumn<String?> familyName = GeneratedColumn<String?>(
       'family_name', aliasedName, true,
@@ -302,6 +330,13 @@ class $ScanEntitysTable extends ScanEntitys
       typeName: 'TEXT',
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
+  final VerificationMeta _imageVaccineMeta =
+      const VerificationMeta('imageVaccine');
+  late final GeneratedColumn<String?> imageVaccine = GeneratedColumn<String?>(
+      'image_vaccine', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _dobMeta = const VerificationMeta('dob');
   late final GeneratedColumn<DateTime?> dob = GeneratedColumn<DateTime?>(
       'dob', aliasedName, true,
@@ -316,13 +351,13 @@ class $ScanEntitysTable extends ScanEntitys
       defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, givenName, familyName, encoded, imageId, dob, date];
+      [id, givenName, familyName, encoded, imageId, imageVaccine, dob, date];
   @override
-  String get aliasedName => _alias ?? 'scan_entitys';
+  String get aliasedName => _alias ?? 'vaccine_entitys';
   @override
-  String get actualTableName => 'scan_entitys';
+  String get actualTableName => 'vaccine_entitys';
   @override
-  VerificationContext validateIntegrity(Insertable<ScanEntity> instance,
+  VerificationContext validateIntegrity(Insertable<VaccineEntity> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -349,6 +384,12 @@ class $ScanEntitysTable extends ScanEntitys
       context.handle(_imageIdMeta,
           imageId.isAcceptableOrUnknown(data['image_id']!, _imageIdMeta));
     }
+    if (data.containsKey('image_vaccine')) {
+      context.handle(
+          _imageVaccineMeta,
+          imageVaccine.isAcceptableOrUnknown(
+              data['image_vaccine']!, _imageVaccineMeta));
+    }
     if (data.containsKey('dob')) {
       context.handle(
           _dobMeta, dob.isAcceptableOrUnknown(data['dob']!, _dobMeta));
@@ -363,43 +404,48 @@ class $ScanEntitysTable extends ScanEntitys
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ScanEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ScanEntity.fromData(data, _db,
+  VaccineEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return VaccineEntity.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $ScanEntitysTable createAlias(String alias) {
-    return $ScanEntitysTable(_db, alias);
+  $VaccineEntitysTable createAlias(String alias) {
+    return $VaccineEntitysTable(_db, alias);
   }
 }
 
-class TracerEntity extends DataClass implements Insertable<TracerEntity> {
+class LocationEntity extends DataClass implements Insertable<LocationEntity> {
   final String gln;
   final String? encoded;
   final String? typ;
+  final String? imageVaccine;
   final String? opn;
   final String? adr;
   final String? ver;
   final DateTime? date;
-  TracerEntity(
+  LocationEntity(
       {required this.gln,
       this.encoded,
       this.typ,
+      this.imageVaccine,
       this.opn,
       this.adr,
       this.ver,
       this.date});
-  factory TracerEntity.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  factory LocationEntity.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return TracerEntity(
+    return LocationEntity(
       gln: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}gln'])!,
       encoded: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}encoded']),
       typ: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}typ']),
+      imageVaccine: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}image_vaccine']),
       opn: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}opn']),
       adr: const StringType()
@@ -420,6 +466,9 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
     if (!nullToAbsent || typ != null) {
       map['typ'] = Variable<String?>(typ);
     }
+    if (!nullToAbsent || imageVaccine != null) {
+      map['image_vaccine'] = Variable<String?>(imageVaccine);
+    }
     if (!nullToAbsent || opn != null) {
       map['opn'] = Variable<String?>(opn);
     }
@@ -435,13 +484,16 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
     return map;
   }
 
-  TracerEntitysCompanion toCompanion(bool nullToAbsent) {
-    return TracerEntitysCompanion(
+  LocationEntitysCompanion toCompanion(bool nullToAbsent) {
+    return LocationEntitysCompanion(
       gln: Value(gln),
       encoded: encoded == null && nullToAbsent
           ? const Value.absent()
           : Value(encoded),
       typ: typ == null && nullToAbsent ? const Value.absent() : Value(typ),
+      imageVaccine: imageVaccine == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageVaccine),
       opn: opn == null && nullToAbsent ? const Value.absent() : Value(opn),
       adr: adr == null && nullToAbsent ? const Value.absent() : Value(adr),
       ver: ver == null && nullToAbsent ? const Value.absent() : Value(ver),
@@ -449,13 +501,14 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
     );
   }
 
-  factory TracerEntity.fromJson(Map<String, dynamic> json,
+  factory LocationEntity.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return TracerEntity(
+    return LocationEntity(
       gln: serializer.fromJson<String>(json['gln']),
       encoded: serializer.fromJson<String?>(json['encoded']),
       typ: serializer.fromJson<String?>(json['typ']),
+      imageVaccine: serializer.fromJson<String?>(json['imageVaccine']),
       opn: serializer.fromJson<String?>(json['opn']),
       adr: serializer.fromJson<String?>(json['adr']),
       ver: serializer.fromJson<String?>(json['ver']),
@@ -469,6 +522,7 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
       'gln': serializer.toJson<String>(gln),
       'encoded': serializer.toJson<String?>(encoded),
       'typ': serializer.toJson<String?>(typ),
+      'imageVaccine': serializer.toJson<String?>(imageVaccine),
       'opn': serializer.toJson<String?>(opn),
       'adr': serializer.toJson<String?>(adr),
       'ver': serializer.toJson<String?>(ver),
@@ -476,18 +530,20 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
     };
   }
 
-  TracerEntity copyWith(
+  LocationEntity copyWith(
           {String? gln,
           String? encoded,
           String? typ,
+          String? imageVaccine,
           String? opn,
           String? adr,
           String? ver,
           DateTime? date}) =>
-      TracerEntity(
+      LocationEntity(
         gln: gln ?? this.gln,
         encoded: encoded ?? this.encoded,
         typ: typ ?? this.typ,
+        imageVaccine: imageVaccine ?? this.imageVaccine,
         opn: opn ?? this.opn,
         adr: adr ?? this.adr,
         ver: ver ?? this.ver,
@@ -495,10 +551,11 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
       );
   @override
   String toString() {
-    return (StringBuffer('TracerEntity(')
+    return (StringBuffer('LocationEntity(')
           ..write('gln: $gln, ')
           ..write('encoded: $encoded, ')
           ..write('typ: $typ, ')
+          ..write('imageVaccine: $imageVaccine, ')
           ..write('opn: $opn, ')
           ..write('adr: $adr, ')
           ..write('ver: $ver, ')
@@ -508,50 +565,56 @@ class TracerEntity extends DataClass implements Insertable<TracerEntity> {
   }
 
   @override
-  int get hashCode => Object.hash(gln, encoded, typ, opn, adr, ver, date);
+  int get hashCode =>
+      Object.hash(gln, encoded, typ, imageVaccine, opn, adr, ver, date);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TracerEntity &&
+      (other is LocationEntity &&
           other.gln == this.gln &&
           other.encoded == this.encoded &&
           other.typ == this.typ &&
+          other.imageVaccine == this.imageVaccine &&
           other.opn == this.opn &&
           other.adr == this.adr &&
           other.ver == this.ver &&
           other.date == this.date);
 }
 
-class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
+class LocationEntitysCompanion extends UpdateCompanion<LocationEntity> {
   final Value<String> gln;
   final Value<String?> encoded;
   final Value<String?> typ;
+  final Value<String?> imageVaccine;
   final Value<String?> opn;
   final Value<String?> adr;
   final Value<String?> ver;
   final Value<DateTime?> date;
-  const TracerEntitysCompanion({
+  const LocationEntitysCompanion({
     this.gln = const Value.absent(),
     this.encoded = const Value.absent(),
     this.typ = const Value.absent(),
+    this.imageVaccine = const Value.absent(),
     this.opn = const Value.absent(),
     this.adr = const Value.absent(),
     this.ver = const Value.absent(),
     this.date = const Value.absent(),
   });
-  TracerEntitysCompanion.insert({
+  LocationEntitysCompanion.insert({
     required String gln,
     this.encoded = const Value.absent(),
     this.typ = const Value.absent(),
+    this.imageVaccine = const Value.absent(),
     this.opn = const Value.absent(),
     this.adr = const Value.absent(),
     this.ver = const Value.absent(),
     this.date = const Value.absent(),
   }) : gln = Value(gln);
-  static Insertable<TracerEntity> custom({
+  static Insertable<LocationEntity> custom({
     Expression<String>? gln,
     Expression<String?>? encoded,
     Expression<String?>? typ,
+    Expression<String?>? imageVaccine,
     Expression<String?>? opn,
     Expression<String?>? adr,
     Expression<String?>? ver,
@@ -561,6 +624,7 @@ class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
       if (gln != null) 'gln': gln,
       if (encoded != null) 'encoded': encoded,
       if (typ != null) 'typ': typ,
+      if (imageVaccine != null) 'image_vaccine': imageVaccine,
       if (opn != null) 'opn': opn,
       if (adr != null) 'adr': adr,
       if (ver != null) 'ver': ver,
@@ -568,18 +632,20 @@ class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
     });
   }
 
-  TracerEntitysCompanion copyWith(
+  LocationEntitysCompanion copyWith(
       {Value<String>? gln,
       Value<String?>? encoded,
       Value<String?>? typ,
+      Value<String?>? imageVaccine,
       Value<String?>? opn,
       Value<String?>? adr,
       Value<String?>? ver,
       Value<DateTime?>? date}) {
-    return TracerEntitysCompanion(
+    return LocationEntitysCompanion(
       gln: gln ?? this.gln,
       encoded: encoded ?? this.encoded,
       typ: typ ?? this.typ,
+      imageVaccine: imageVaccine ?? this.imageVaccine,
       opn: opn ?? this.opn,
       adr: adr ?? this.adr,
       ver: ver ?? this.ver,
@@ -599,6 +665,9 @@ class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
     if (typ.present) {
       map['typ'] = Variable<String?>(typ.value);
     }
+    if (imageVaccine.present) {
+      map['image_vaccine'] = Variable<String?>(imageVaccine.value);
+    }
     if (opn.present) {
       map['opn'] = Variable<String?>(opn.value);
     }
@@ -616,10 +685,11 @@ class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
 
   @override
   String toString() {
-    return (StringBuffer('TracerEntitysCompanion(')
+    return (StringBuffer('LocationEntitysCompanion(')
           ..write('gln: $gln, ')
           ..write('encoded: $encoded, ')
           ..write('typ: $typ, ')
+          ..write('imageVaccine: $imageVaccine, ')
           ..write('opn: $opn, ')
           ..write('adr: $adr, ')
           ..write('ver: $ver, ')
@@ -629,11 +699,11 @@ class TracerEntitysCompanion extends UpdateCompanion<TracerEntity> {
   }
 }
 
-class $TracerEntitysTable extends TracerEntitys
-    with TableInfo<$TracerEntitysTable, TracerEntity> {
+class $LocationEntitysTable extends LocationEntitys
+    with TableInfo<$LocationEntitysTable, LocationEntity> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $TracerEntitysTable(this._db, [this._alias]);
+  $LocationEntitysTable(this._db, [this._alias]);
   final VerificationMeta _glnMeta = const VerificationMeta('gln');
   late final GeneratedColumn<String?> gln = GeneratedColumn<String?>(
       'gln', aliasedName, false,
@@ -647,6 +717,13 @@ class $TracerEntitysTable extends TracerEntitys
   final VerificationMeta _typMeta = const VerificationMeta('typ');
   late final GeneratedColumn<String?> typ = GeneratedColumn<String?>(
       'typ', aliasedName, true,
+      typeName: 'TEXT',
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
+  final VerificationMeta _imageVaccineMeta =
+      const VerificationMeta('imageVaccine');
+  late final GeneratedColumn<String?> imageVaccine = GeneratedColumn<String?>(
+      'image_vaccine', aliasedName, true,
       typeName: 'TEXT',
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
@@ -676,13 +753,13 @@ class $TracerEntitysTable extends TracerEntitys
       defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [gln, encoded, typ, opn, adr, ver, date];
+      [gln, encoded, typ, imageVaccine, opn, adr, ver, date];
   @override
-  String get aliasedName => _alias ?? 'tracer_entitys';
+  String get aliasedName => _alias ?? 'location_entitys';
   @override
-  String get actualTableName => 'tracer_entitys';
+  String get actualTableName => 'location_entitys';
   @override
-  VerificationContext validateIntegrity(Insertable<TracerEntity> instance,
+  VerificationContext validateIntegrity(Insertable<LocationEntity> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -699,6 +776,12 @@ class $TracerEntitysTable extends TracerEntitys
     if (data.containsKey('typ')) {
       context.handle(
           _typMeta, typ.isAcceptableOrUnknown(data['typ']!, _typMeta));
+    }
+    if (data.containsKey('image_vaccine')) {
+      context.handle(
+          _imageVaccineMeta,
+          imageVaccine.isAcceptableOrUnknown(
+              data['image_vaccine']!, _imageVaccineMeta));
     }
     if (data.containsKey('opn')) {
       context.handle(
@@ -722,14 +805,14 @@ class $TracerEntitysTable extends TracerEntitys
   @override
   Set<GeneratedColumn> get $primaryKey => {gln};
   @override
-  TracerEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return TracerEntity.fromData(data, _db,
+  LocationEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return LocationEntity.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $TracerEntitysTable createAlias(String alias) {
-    return $TracerEntitysTable(_db, alias);
+  $LocationEntitysTable createAlias(String alias) {
+    return $LocationEntitysTable(_db, alias);
   }
 }
 
@@ -938,17 +1021,18 @@ class $PinEntitysTable extends PinEntitys
 
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $ScanEntitysTable scanEntitys = $ScanEntitysTable(this);
-  late final $TracerEntitysTable tracerEntitys = $TracerEntitysTable(this);
+  late final $VaccineEntitysTable vaccineEntitys = $VaccineEntitysTable(this);
+  late final $LocationEntitysTable locationEntitys =
+      $LocationEntitysTable(this);
   late final $PinEntitysTable pinEntitys = $PinEntitysTable(this);
-  late final ScanEntitysDao scanEntitysDao =
-      ScanEntitysDao(this as AppDatabase);
-  late final TracerEntitysDao tracerEntitysDao =
-      TracerEntitysDao(this as AppDatabase);
+  late final VaccineEntitysDao vaccineEntitysDao =
+      VaccineEntitysDao(this as AppDatabase);
+  late final LocationEntitysDao locationEntitysDao =
+      LocationEntitysDao(this as AppDatabase);
   late final PinEntitysDao pinEntitysDao = PinEntitysDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [scanEntitys, tracerEntitys, pinEntitys];
+      [vaccineEntitys, locationEntitys, pinEntitys];
 }

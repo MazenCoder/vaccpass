@@ -25,7 +25,7 @@ const Map<String, String> en = {
   "clear": "Clear",
   "privacy": "Privacy",
   "version": "Version %s",
-  "saved_success": "Saved successfully",
+  "saved_success": "Successfully saved",
   "exit_app": "Are you sure you want to exit?",
   "exit": "Exit",
   "scan_vaccine": "Scan vaccine",
@@ -53,6 +53,8 @@ const Map<String, String> en = {
   "enter_your_pin": "Enter your PIN Code",
   "enter_digit_pin": "please enter the four digit PIN code",
   "pin_code": "PIN Code",
+  "scan_qrcode": "Scan QR Code",
+  "scan_take_library": "Scan or Take a photo or add from photo Library",
   "activate_deactivate_pin": "Activate / Deactivate",
 
 };

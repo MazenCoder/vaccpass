@@ -2,12 +2,11 @@ import 'package:vaccpass/core/database/app_database.dart';
 import 'dart:convert';
 
 
-
 TracerModel tracerModelFromJson(String str, String encoded) => TracerModel.fromJson(json.decode(str), encoded);
 
 String tracerModelToJson(TracerModel data) => json.encode(data.toJson());
 
-class TracerModel extends TracerEntity {
+class TracerModel extends LocationEntity {
   TracerModel({
     this.typ,
     required this.gln,

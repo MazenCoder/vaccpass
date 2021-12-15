@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 
 class DisplayLocation extends StatelessWidget {
-  final TracerEntity model;
+  final LocationEntity model;
   const DisplayLocation({required this.model, Key? key}) : super(key: key);
 
 

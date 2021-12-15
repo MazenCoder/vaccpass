@@ -1,10 +1,11 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vaccpass/core/ui/responsive_safe_area.dart';
 import 'package:vaccpass/core/cache/preference_utils.dart';
+import 'package:vaccpass/core/ui/passport_modal_fit.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/widgets/create_pin_code.dart';
 import 'package:vaccpass/widgets/scan_location.dart';
-import 'package:vaccpass/widgets/scan_vaccine.dart';
 import 'package:vaccpass/pages/locations_page.dart';
 import 'package:vaccpass/core/util/constants.dart';
 import 'package:vaccpass/pages/vaccine_page.dart';
@@ -24,9 +25,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with AfterLayoutMixin<HomePage>{
-
+class _HomePageState extends State<HomePage> with AfterLayoutMixin<HomePage>{
 
   Future showDialogPinCode(BuildContext context) async {
     try {
@@ -101,23 +100,26 @@ class _HomePageState extends State<HomePage>
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            backgroundColor: Colors.grey,
+            backgroundColor: Colors.white,
             title: Text('app_name'.tr,
               style: const TextStyle(
                 fontFamily: 'SansSerifFLF',
-                // fontWeight: FontWeight.bold,
+                color: primaryColor
               ),
             ),
             actions: [
               IconButton(
-                icon: const Icon(MdiIcons.information,
-                  color: Colors.white,
+                icon: const Icon(
+                  MdiIcons.information,
+                  color: primaryColor,
+                  // color: Colors.white,
                 ),
                 onPressed: () => Get.to(() => const InfoPage()),
               )
             ],
           ),
-          backgroundColor: Colors.grey.shade400,
+          backgroundColor: primaryColor,
+          // backgroundColor: Colors.grey.shade400,
           body: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -185,7 +187,11 @@ class _HomePageState extends State<HomePage>
                   Material(
                     borderRadius: BorderRadius.circular(10),
                     child: InkWell(
-                      onTap: () => Get.to(() => const ScanVaccine()),
+                      // onTap: () => Get.to(() => const ScanVaccine()),
+                      onTap: () => showMaterialModalBottomSheet(
+                        expand: false, context: context,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => const PassportModalFit()),
                       child: SizedBox(
                         width: Get.width - 50,
                         height: Get.height/5.5,
@@ -198,7 +204,7 @@ class _HomePageState extends State<HomePage>
                               height: Get.height/8.5,
                             ),
                             const SizedBox(height: 6),
-                            const Text('SCAN PASSPORT',
+                            const Text('SCAN /UPLOAD PASSPORT',
                               style: TextStyle(
                                 fontFamily: 'SansSerifFLF',
                                 fontWeight: FontWeight.bold,
@@ -250,7 +256,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   void afterFirstLayout(BuildContext context) async {
-    // await showDialogPinCode(context);
     final check = PreferenceUtils.getBool(Keys.dialogPinCode, true);
     if (check) {
       await showDialogPinCode(context);
