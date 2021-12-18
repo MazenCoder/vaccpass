@@ -130,6 +130,7 @@ class InfoPage extends StatelessWidget {
                 title: 'privacy'.tr,
                 url: 'https://sites.google.com/view/vacc-id',
               )),
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
             const Divider(),
             ListTile(
