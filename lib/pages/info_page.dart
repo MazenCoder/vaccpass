@@ -12,6 +12,7 @@ import 'package:vaccpass/core/util/img.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vaccpass/widgets/web_view_app.dart';
 import 'license_package_page.dart';
 import 'package:get/get.dart';
 import '../main.dart';
@@ -125,7 +126,10 @@ class InfoPage extends StatelessWidget {
                 style: GoogleFonts.acme(),
               ),
               leading: const Icon(MdiIcons.bookLock),
-              // onTap: () => Get.to(() => const AddressPage()),
+              onTap: () => Get.to(() => WebVewApp(
+                title: 'privacy'.tr,
+                url: 'https://sites.google.com/view/vacc-id',
+              )),
             ),
             const Divider(),
             ListTile(
