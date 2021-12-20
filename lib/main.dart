@@ -24,9 +24,12 @@ RateMyApp rateMyApp = RateMyApp(
   minLaunches: 7,
   remindDays: 2,
   remindLaunches: 5,
-  googlePlayIdentifier: 'com.simon.vaccpass',
+  googlePlayIdentifier: 'com.simon.vaccid',
+  // googlePlayIdentifier: 'com.simon.vaccpass',
   appStoreIdentifier: 'com.simon.vaccpass',
 );
+
+// flutter pub run change_app_package_name:main com.simon.vaccid
 
 void main() async {
   var db = AppDatabase.instance;
