@@ -20,10 +20,8 @@ import 'core/util/keys.dart';
 
 RateMyApp rateMyApp = RateMyApp(
   preferencesPrefix: Keys.rateApp,
-  minDays: 3,
-  minLaunches: 7,
-  remindDays: 2,
-  remindLaunches: 5,
+  minDays: 3, minLaunches: 7,
+  remindDays: 2, remindLaunches: 5,
   googlePlayIdentifier: 'com.simon.vaccid',
   // googlePlayIdentifier: 'com.simon.vaccpass',
   appStoreIdentifier: 'com.simon.vaccpass',
