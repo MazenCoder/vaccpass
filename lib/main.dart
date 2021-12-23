@@ -24,7 +24,7 @@ RateMyApp rateMyApp = RateMyApp(
   remindDays: 2, remindLaunches: 5,
   googlePlayIdentifier: 'com.simon.vaccid',
   // googlePlayIdentifier: 'com.simon.vaccpass',
-  appStoreIdentifier: 'com.simon.vaccpass',
+  appStoreIdentifier: 'com.simon.easidwallet',
 );
 
 // flutter pub run change_app_package_name:main com.simon.vaccid
