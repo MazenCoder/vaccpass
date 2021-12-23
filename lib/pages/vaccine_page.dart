@@ -1,7 +1,7 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/ui/responsive_safe_area.dart';
+import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/widgets/display_passport.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/widgets/edit_vaccine.dart';
@@ -26,20 +26,20 @@ class VaccinePage extends StatelessWidget {
       builder: (_) => Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios,
-              color: primaryColor,
+              // color: primaryColor,
             ),
             onPressed: () => Get.back(),
           ),
-          title: Text('DISPLAY PASSPORT',
+          title: Text('display_id_pass'.tr.toUpperCase(),
               style: GoogleFonts.lato(
-                color: primaryColor,
+                // color: primaryColor,
               )
           ),
         ),
-        backgroundColor: primaryColor,
+        // backgroundColor: primaryColor,
         // backgroundColor: Colors.grey.shade400,
         body: StreamBuilder<List<VaccineEntity>>(
           stream: db.vaccineEntitysDao.watchAllScanByDate(),
@@ -78,7 +78,7 @@ class VaccinePage extends StatelessWidget {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(MdiIcons.qrcode,
+                                        const Icon(MdiIcons.cardAccountDetails,
                                           color: primaryColor,
                                           size: 30,
                                         ),

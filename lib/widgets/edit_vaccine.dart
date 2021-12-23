@@ -1,12 +1,11 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:vaccpass/core/ui/edit_passport_modal_fit.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vaccpass/core/database/app_database.dart';
-import 'package:vaccpass/core/ui/edit_passport_modal_fit.dart';
-import 'package:vaccpass/core/ui/modal_fit.dart';
-import 'package:vaccpass/core/ui/passport_modal_fit.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/core/util/constants.dart';
+import 'package:vaccpass/core/ui/modal_fit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +45,8 @@ class _EditVaccineState extends State<EditVaccine> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Edit Vaccine',
-          style: TextStyle(
+        title: Text('edit_id_pass'.tr.toUpperCase(),
+          style: const TextStyle(
             fontFamily: 'SansSerifFLF',
             fontWeight: FontWeight.bold,
           ),
@@ -170,11 +169,11 @@ class _EditVaccineState extends State<EditVaccine> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(16),
-                              child: Text('Photo QR Code',
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text('photo_passport'.tr,
                                 textAlign: TextAlign.start,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'SansSerifFLF',
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -192,13 +191,13 @@ class _EditVaccineState extends State<EditVaccine> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 TextButton.icon(
-                                  label: Text('Update Photo QR Code',
+                                  label: Text('update_photo'.tr,
                                     style: GoogleFonts.acme(
                                       fontSize: 12,
                                       color: primaryColor,
                                     ),
                                   ),
-                                  icon: const Icon(MdiIcons.qrcodeScan),
+                                  icon: const Icon(MdiIcons.cameraPlus),
                                   onPressed: () => showMaterialModalBottomSheet(
                                     expand: false, context: context,
                                     backgroundColor: Colors.transparent,

@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         locale: Locale(PreferenceUtils.getString(Keys.locale, 'en')),
         fallbackLocale: const Locale('en'),
         debugShowCheckedModeBanner: false,
-        title: 'VACC+ID',
+        title: 'Easy Id Wallet',
         theme: ThemeData(
           primarySwatch: primaryColor,
           primaryColor: primaryColor,

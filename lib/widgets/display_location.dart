@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vaccpass/core/usecases/constants.dart';
 
 
 
@@ -76,37 +77,59 @@ class DisplayLocation extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            QrImage(
-              data: model.encoded??'',
-              version: QrVersions.auto,
-              size: Get.width-100,
-            ),
-            Column(
+        child: InteractiveViewer(
+          panEnabled: false, // Set it to false to prevent panning.
+          boundaryMargin: const EdgeInsets.all(80),
+          minScale: 0.5,
+          child: SizedBox(
+            width: Get.width,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(model.opn??'',
-                  style: GoogleFonts.acme(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                if (model.encoded != null && model.encoded!.isNotEmpty)
+                  Expanded(
+                    child: QrImage(
+                      data: model.encoded??'',
+                      version: QrVersions.auto,
+                      size: Get.width-100,
+                    ),
+                  )
+                else if (model.imageVaccine != null && model.imageVaccine!.isNotEmpty)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.memory(
+                        appUtils.convertImageBase64(model.imageVaccine),
+                        // height: 30,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 5, height: 5),
-                Text(model.adr?.replaceAll('\n', ' ')??'',
-                  style: GoogleFonts.acme(
-                    fontSize: 14,
-                  ),
-                ),
 
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(model.opn??'',
+                      style: GoogleFonts.acme(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(width: 5, height: 5),
+                    Text(model.adr?.replaceAll('\n', ' ')??'',
+                      style: GoogleFonts.acme(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
               ],
-            )
-          ],
+            ),
+          ),
         )
       ),
       /*

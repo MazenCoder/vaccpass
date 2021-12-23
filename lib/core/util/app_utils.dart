@@ -17,6 +17,7 @@ abstract class AppUtils extends ChangeNotifier {
   Future<void> createPinCode(String pinCode);
   Future<void> activateDeactivatePin(PinEntity? entity, bool val);
   Future<void> saveFilePassport(BuildContext context, File croppedFile);
+  Future<void> saveFileLocation(BuildContext context, File croppedFile);
   Future<void> editVaccine({required BuildContext context,
     required VaccineEntity model, required bool deleteEncodedQr,
     required bool deletePhotoQr, required bool deletePhotoID});

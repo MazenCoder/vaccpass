@@ -9,7 +9,7 @@ class LocationEntitys extends Table {
   TextColumn get encoded => text().nullable().withDefault(const Constant(''))();
   TextColumn get typ => text().nullable().withDefault(const Constant(''))();
   TextColumn get imageVaccine => text().nullable().withDefault(const Constant(''))();
-  TextColumn get opn => text().nullable().withDefault(const Constant(''))();
+  TextColumn get opn => text().nullable().withDefault(const Constant('New Location'))();
   TextColumn get adr => text().nullable().withDefault(const Constant(''))();
   TextColumn get ver => text().nullable().withDefault(const Constant(''))();
   DateTimeColumn get date => dateTime().nullable().withDefault(Constant(DateTime.now()))();

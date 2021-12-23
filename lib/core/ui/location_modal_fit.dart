@@ -1,5 +1,4 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/widgets/scan_vaccine.dart';
 import 'package:vaccpass/core/util/constants.dart';
@@ -11,9 +10,8 @@ import 'dart:io';
 
 
 
-class EditPassportModalFit extends StatelessWidget {
-  final VaccineEntity model;
-  const EditPassportModalFit({required this.model, Key? key}) : super(key: key);
+class LocationModalFit extends StatelessWidget {
+  const LocationModalFit({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +30,7 @@ class EditPassportModalFit extends StatelessWidget {
               ),
             ),
           ),
+
           /*
           ListTile(
             title: Text('scan_qrcode'.tr,
@@ -45,10 +44,11 @@ class EditPassportModalFit extends StatelessWidget {
             ),
             onTap: () {
               Navigator.of(context).pop();
-              Get.to(() => ScanVaccine(model: model));
+              Get.to(() => const ScanVaccine());
             }
           ),
           */
+
           ListTile(
             title: Text('photo_library'.tr,
               style: const TextStyle(
@@ -82,7 +82,7 @@ class EditPassportModalFit extends StatelessWidget {
                     )
                 );
                 if (croppedFile != null) {
-                  await appUtils.editVaccineFilePassport(context, model, croppedFile);
+                  await appUtils.saveFileLocation(context, croppedFile);
                 }
                 Navigator.of(context).pop();
               }
@@ -122,7 +122,7 @@ class EditPassportModalFit extends StatelessWidget {
                     )
                 );
                 if (croppedFile != null) {
-                  await appUtils.editVaccineFilePassport(context, model, croppedFile);
+                  await appUtils.saveFileLocation(context, croppedFile);
                 }
                 Navigator.of(context).pop();
               }

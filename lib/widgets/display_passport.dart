@@ -2,7 +2,6 @@ import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';

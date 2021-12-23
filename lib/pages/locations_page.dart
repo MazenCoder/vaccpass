@@ -1,6 +1,6 @@
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/core/ui/responsive_safe_area.dart';
+import 'package:vaccpass/core/database/app_database.dart';
 import 'package:vaccpass/widgets/display_location.dart';
 import 'package:vaccpass/core/util/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,21 +23,21 @@ class LocationsPage extends StatelessWidget {
       builder: (_) => Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
-              color: primaryColor,
+              // color: primaryColor,
             ),
             onPressed: () => Get.back(),
           ),
-          title: Text('DISPLAY LOCATIONS',
+          title: Text('display_locations'.tr.toUpperCase(),
             style: GoogleFonts.lato(
-              color: primaryColor,
+              // color: primaryColor,
             )
           ),
         ),
-        backgroundColor: primaryColor,
+        // backgroundColor: primaryColor,
         body: StreamBuilder<List<LocationEntity>>(
           stream: db.locationEntitysDao.watchAllLocationByDate(),
           builder: (context, snapshot) {
@@ -86,7 +86,7 @@ class LocationsPage extends StatelessWidget {
                               ));
                             },
                           ),
-                          leading: const Icon(MdiIcons.qrcode, color: primaryColor),
+                          leading: const Icon(Icons.location_pin, color: primaryColor),
                           title: Text(tracer.opn??'',
                             style: const TextStyle(
                               fontFamily: 'SansSerifFLF',

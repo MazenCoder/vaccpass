@@ -95,6 +95,36 @@ class AppUtilsImpl extends AppUtils {
     }
   }
 
+  @override
+  Future<void> saveFileLocation(BuildContext context, File croppedFile) async {
+    try {
+      logger.i('saved');
+      final id = const Uuid().v4();
+      // Uint8List audioByte = await _readFileByte(croppedFile.path);
+      Uint8List? audioByte = await compressFile(croppedFile);
+      String img = base64.encode(audioByte!);
+      final entity = LocationEntity(
+        gln: id, date: DateTime.now(),
+        imageVaccine: img, adr: 'New Location',
+        opn: 'New Location',
+      );
+      await database.locationEntitysDao.insertLocation(entity);
+      logger.i('saved 2');
+      FlashHelper.successBar(
+        context: context,
+        title: 'Location',
+        message: 'saved_success'.tr,
+      );
+    } catch(e) {
+      logger.e(e);
+      FlashHelper.errorBar(
+        context: context,
+        title: 'Location',
+        message: 'something_wrong'.tr,
+      );
+    }
+  }
+
 
   @override
   Future<void> clearHistory() async {
@@ -148,9 +178,9 @@ class AppUtilsImpl extends AppUtils {
   Future<Uint8List?> compressFile(File file) async {
     var result = await FlutterImageCompress.compressWithFile(
       file.absolute.path,
-      minWidth: 2300,
-      minHeight: 1500,
-      quality: 50,
+      // minWidth: 1300,
+      // minHeight: 800,
+      quality: 40,
       rotate: 0,
     );
     return result;
@@ -245,13 +275,14 @@ class AppUtilsImpl extends AppUtils {
   Future<bool> confirmDelete(BuildContext context, String content) async {
     return await showDialog(context: context, builder: (context) {
       return AlertDialog(
-        title: const Text('Delete',
-          style: TextStyle(
+        title: Text('delete'.tr,
+          style: const TextStyle(
             fontFamily: 'SansSerifFLF',
             fontWeight: FontWeight.bold,
           ),
         ),
-        content: Text('Are you sure you want to delete this $content',
+        content: Text('confirm_delete_photo'.tr,
+        // content: Text('Are you sure you want to delete this $content',
           style: const TextStyle(
             fontFamily: 'SansSerifFLF',
             fontWeight: FontWeight.normal,
@@ -259,12 +290,12 @@ class AppUtilsImpl extends AppUtils {
         ),
         actions: [
           TextButton(
-            child: const Text('Delete'),
+            child: Text('delete'.tr),
             onPressed: () => Navigator.pop(context, true),
           ),
 
           TextButton(
-            child: const Text('Cancel'),
+            child: Text('cancel'.tr),
             onPressed: () => Navigator.pop(context, false),
           ),
         ],

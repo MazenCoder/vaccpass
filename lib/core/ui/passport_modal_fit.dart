@@ -24,12 +24,14 @@ class PassportModalFit extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 5, left: 16, right: 16),
-            child: Text('scan_take_library'.tr,
+            child: Text('add_take_library'.tr,
               style: const TextStyle(
                 fontSize: 16,
               ),
             ),
           ),
+
+          /*
           ListTile(
             title: Text('scan_qrcode'.tr,
               style: const TextStyle(
@@ -45,6 +47,8 @@ class PassportModalFit extends StatelessWidget {
               Get.to(() => const ScanVaccine());
             }
           ),
+          */
+
           ListTile(
             title: Text('photo_library'.tr,
               style: const TextStyle(

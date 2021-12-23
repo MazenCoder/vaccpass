@@ -44,6 +44,7 @@ class InfoPage extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         child: Column(
           children: [
+            /*
             const SizedBox(height: 6),
             ListTile(
               title: Text('license'.tr,
@@ -58,6 +59,7 @@ class InfoPage extends StatelessWidget {
             ),
 
             const Divider(),
+            */
             const SizedBox(height: 6),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 0),

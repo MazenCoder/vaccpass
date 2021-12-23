@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import 'package:vaccpass/core/util/constants.dart';
+
 
 typedef ResponsiveBuilder = Widget Function(BuildContext context);
 
@@ -16,7 +18,8 @@ class ResponsiveSafeArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: primaryColor,
+      // color: Colors.white,
       // color: Platform.isAndroid ? Colors.grey : Colors.white,
       child: SafeArea(
         bottom: false,

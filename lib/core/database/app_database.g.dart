@@ -732,7 +732,7 @@ class $LocationEntitysTable extends LocationEntitys
       'opn', aliasedName, true,
       typeName: 'TEXT',
       requiredDuringInsert: false,
-      defaultValue: const Constant(''));
+      defaultValue: const Constant('New Location'));
   final VerificationMeta _adrMeta = const VerificationMeta('adr');
   late final GeneratedColumn<String?> adr = GeneratedColumn<String?>(
       'adr', aliasedName, true,
