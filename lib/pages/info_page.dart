@@ -5,6 +5,7 @@ import 'package:vaccpass/widgets/update_pin_code.dart';
 import 'package:vaccpass/core/usecases/constants.dart';
 import 'package:vaccpass/widgets/create_pin_code.dart';
 import 'package:vaccpass/core/ui/loading_dialog.dart';
+import 'package:vaccpass/widgets/web_view_app.dart';
 import 'package:vaccpass/core/util/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vaccpass/core/util/keys.dart';
@@ -12,7 +13,6 @@ import 'package:vaccpass/core/util/img.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:vaccpass/widgets/web_view_app.dart';
 import 'license_package_page.dart';
 import 'package:get/get.dart';
 import '../main.dart';
@@ -30,7 +30,7 @@ class InfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.grey,
+        // backgroundColor: Colors.grey,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Get.back(),
