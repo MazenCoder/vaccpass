@@ -68,7 +68,7 @@ class _ScanVaccineState extends State<ScanVaccine> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('SCAN PASSPORT',
+        title: Text('scan_qrcode'.tr,
           style: GoogleFonts.lato(
             fontWeight: FontWeight.bold,
           )

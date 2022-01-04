@@ -31,7 +31,6 @@ class PassportModalFit extends StatelessWidget {
             ),
           ),
 
-          /*
           ListTile(
             title: Text('scan_qrcode'.tr,
               style: const TextStyle(
@@ -47,7 +46,7 @@ class PassportModalFit extends StatelessWidget {
               Get.to(() => const ScanVaccine());
             }
           ),
-          */
+
 
           ListTile(
             title: Text('photo_library'.tr,
